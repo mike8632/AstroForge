@@ -1,0 +1,170 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+/*
+Usage Notes:
+- Utfyld 'variants' for vægtet fordeling; ellers bruges 'm_Sprites' (jævn fordeling). Variants har forrang.
+- 'seed' styrer det deterministiske mønster. Brug forskellige tile-assets hvis du vil have forskellige seeds pr. Tilemap.
+- Brug Context Menu -> "Refresh Cache" for manuelt at genopbygge cache, hvis du ændrer arrays via script.
+*/
+
+[CreateAssetMenu(fileName = "New Random Tile", menuName = "Tiles/Random Tile")]
+[ExecuteAlways]
+public class RandomTile : TileBase
+{
+    [Header("Sprites")]
+    [Tooltip("Standard sprites til jævn fordeling hvis 'variants' er tomt (fallback).")]
+    public Sprite[] m_Sprites;
+
+    [Header("Weighted Variants")]
+    [Tooltip("Vægtede varianter (har forrang frem for 'm_Sprites').")]
+    public WeightedSprite[] variants;
+
+    [Header("Randomization")]
+    [Tooltip("Seed for deterministisk randomisering. Samme seed => samme mønster.")]
+    public int seed = 0;
+
+    [Header("Tile Settings")]
+    [Tooltip("Farve der multipliceres med sprite.")]
+    public Color m_Color = Color.white;
+
+    // Cached data for performance and null-safety
+    [NonSerialized] private Sprite[] _spritesNonNull;
+    [NonSerialized] private Sprite[] _variantSprites;
+    [NonSerialized] private int[] _variantCumWeights; // cumulative weights
+    [NonSerialized] private int _variantTotalWeight;
+
+    public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
+    {
+        tileData.color = m_Color;
+        tileData.flags = TileFlags.LockTransform;
+        tileData.colliderType = Tile.ColliderType.None;
+
+        // Prefer weighted variants if available (using cached data)
+        if (_variantTotalWeight > 0 && _variantSprites != null && _variantCumWeights != null)
+        {
+            int h = Hash3(position.x, position.y, seed);
+            int roll = (int)((uint)h % (uint)_variantTotalWeight);
+
+            int idx = Array.BinarySearch(_variantCumWeights, roll);
+            if (idx < 0) idx = ~idx; // first index with cumWeight > roll
+            tileData.sprite = _variantSprites[idx];
+            return;
+        }
+
+        // Fallback to uniform selection from non-null sprites
+        var sprites = _spritesNonNull ?? m_Sprites;
+        if (sprites == null || sprites.Length == 0)
+            return;
+
+        int index = (int)((uint)Hash3(position.x, position.y, seed) % (uint)sprites.Length);
+        var sprite = sprites[index];
+        if (sprite == null)
+        {
+            // Safety: find the next non-null sprite (should rarely run if cache exists)
+            for (int i = 1; i < sprites.Length; i++)
+            {
+                int j = (index + i) % sprites.Length;
+                if (sprites[j] != null)
+                {
+                    sprite = sprites[j];
+                    break;
+                }
+            }
+            if (sprite == null) return;
+        }
+        tileData.sprite = sprite;
+    }
+
+    //2D hash with seed mixed in (FNV-1a style)
+    private static int Hash3(int x, int y, int s)
+    {
+        unchecked
+        {
+            uint h = 2166136261u;          // FNV-1a hash seed
+            h = (h ^ (uint)x) * 16777619u;
+            h = (h ^ (uint)y) * 16777619u;
+            h = (h ^ (uint)s) * 16777619u;
+            return (int)h;
+        }
+    }
+
+    // Cache preprocessing in editor when values change
+    // Cache preprocessing when values change
+    protected void OnValidate()
+    {
+        RebuildCache();
+    }
+
+    [ContextMenu("Refresh Cache")]
+    public void RefreshCache()
+    {
+        RebuildCache();
+    }
+
+    private void RebuildCache()
+    {
+        // Cache non-null m_Sprites
+        if (m_Sprites != null && m_Sprites.Length > 0)
+        {
+            var list = new List<Sprite>(m_Sprites.Length);
+            for (int i = 0; i < m_Sprites.Length; i++)
+            {
+                var s = m_Sprites[i];
+                if (s != null) list.Add(s);
+            }
+            _spritesNonNull = list.Count > 0 ? list.ToArray() : null;
+        }
+        else
+        {
+            _spritesNonNull = null;
+        }
+
+        // Cache weighted variants cumulative weights and sprites (skip nulls, clamp weight >=1)
+        if (variants != null && variants.Length > 0)
+        {
+            var spr = new List<Sprite>(variants.Length);
+            var cum = new List<int>(variants.Length);
+            int total = 0;
+            for (int i = 0; i < variants.Length; i++)
+            {
+                var v = variants[i];
+                if (v.sprite == null) continue;
+                int w = v.weight < 1 ? 1 : v.weight;
+                total += w;
+                spr.Add(v.sprite);
+                cum.Add(total);
+            }
+
+            if (total > 0 && spr.Count > 0)
+            {
+                _variantSprites = spr.ToArray();
+                _variantCumWeights = cum.ToArray();
+                _variantTotalWeight = total;
+            }
+            else
+            {
+                _variantSprites = null;
+                _variantCumWeights = null;
+                _variantTotalWeight = 0;
+            }
+        }
+        else
+        {
+            _variantSprites = null;
+            _variantCumWeights = null;
+            _variantTotalWeight = 0;
+        }
+    }
+
+    [System.Serializable]
+    public struct WeightedSprite
+    {
+        [Tooltip("Sprite for varianten.")]
+        public Sprite sprite;
+        [Range(1, 100)] [Tooltip("Vægt (1-100). Højere = oftere valgt.")]
+        public int weight;
+    }
+}
