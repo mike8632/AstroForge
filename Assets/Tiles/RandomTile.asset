@@ -12,5 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0259cf54e0b6dba40ac48835db667bb5, type: 3}
   m_Name: RandomTile
   m_EditorClassIdentifier: Assembly-CSharp::RandomTile
-  m_Sprites: []
+  m_Sprites:
+  - {fileID: -3413677919733774176, guid: 5d619c986d41cbe49beae1339fc9d061, type: 3}
+  - {fileID: -7897992978722926549, guid: d33c54de7fc9501409144e3c7349e783, type: 3}
+  - {fileID: -4919517487961691516, guid: 7e9b495a770d2bd478f028fdd31f2204, type: 3}
+  - {fileID: 3065729251932762746, guid: d8b023ee426284d45b8e5044da1f6d03, type: 3}
+  - {fileID: 8548617343944463013, guid: 2d58178ff96a99743858f90aaf50b7eb, type: 3}
+  - {fileID: 1680353549288901453, guid: 43c2274451114184985f023f1e543624, type: 3}
+  - {fileID: 7094987411578876645, guid: 526cbcf25ebf44d408875a31bab355ad, type: 3}
+  - {fileID: -2540999573501348297, guid: 8f5a517560cd31646a8079a97327e503, type: 3}
+  variants: []
+  seed: 3
   m_Color: {r: 1, g: 1, b: 1, a: 1}
