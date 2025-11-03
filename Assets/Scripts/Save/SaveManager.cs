@@ -11,7 +11,7 @@ public class SaveManager : MonoBehaviour
 
     [Header("Options")]
     [SerializeField] private bool dontDestroyOnLoad = true;
-    [SerializeField] private bool autoLoadOnSceneStart = false; // set true if you want the game to auto-load when entering a scene and a save exists.
+    [SerializeField] private bool autoLoadOnSceneStart = false; 
 
     [Header("Continue button flag (PlayerPrefs)")]
     [SerializeField] private string continueFlagKey = "save_exists";

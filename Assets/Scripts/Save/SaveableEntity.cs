@@ -4,7 +4,6 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class SaveableEntity : MonoBehaviour
 {
-    // Unique stable ID per object so we can match saved data to scene objects.
     [SerializeField] private string uniqueId = Guid.Empty.ToString();
 
     public string UniqueId => uniqueId;

@@ -67,7 +67,6 @@ public class MenuNavigator : MonoBehaviour
 
         settingsMenuRoot.SetActive(true);
 
-        // Hide main only if settings isn't already visually inside main
         if (mainMenuRoot && hideMainWhileInSettings && !settingsMenuRoot.transform.IsChildOf(mainMenuRoot.transform))
         {
             mainMenuRoot.SetActive(false);
@@ -86,7 +85,7 @@ public class MenuNavigator : MonoBehaviour
 
         settingsMenuRoot.SetActive(false);
 
-        // If settings lives outside main, bring main back when closing settings
+     
         if (!settingsIsChildOfMain && mainMenuRoot != null)
         {
             mainMenuRoot.SetActive(true);
@@ -97,10 +96,6 @@ public class MenuNavigator : MonoBehaviour
 
     public void PlayNewGame()
     {
-        // If you want a "fresh start", clear/initialize your save here.
-        // Example: PlayerPrefs.DeleteKey(continueFlagKey);
-
-        // Ensure the game is unpaused before loading
         Time.timeScale = 1f;
         LoadScene(gameSceneName);
     }
@@ -184,7 +179,5 @@ public class MenuNavigator : MonoBehaviour
 
         if (loadingPanelRoot) loadingPanelRoot.SetActive(false);
     }
-
-    // Optional: quick menu hooks if you wire multiple scenes
     public void LoadSceneByName(string sceneName) => LoadScene(sceneName);
 }

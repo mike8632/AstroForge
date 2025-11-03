@@ -46,7 +46,7 @@ public class SimpleSettingsMenu : MonoBehaviour
         LoadFromPrefs();
         ApplyToUIWithoutEvents();
         HookEvents();
-        ApplyRuntime(); // make sure the game actually changes at startup
+        ApplyRuntime(); 
     }
 
     private void OnDestroy() => UnhookEvents();
@@ -235,6 +235,5 @@ public class SimpleSettingsMenu : MonoBehaviour
         return Mathf.Log10(Mathf.Clamp(x, 0.0001f, 1f)) * 20f;
     }
 
-    // Hook this from your "Go Back" button.
     public void OnGoBack() => onGoBack?.Invoke();
 }

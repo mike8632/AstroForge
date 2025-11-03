@@ -1290,19 +1290,7 @@ MonoBehaviour:
   loadAsync: 0
   OnSaveRequested:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11500000, guid: 48f56933c2197794cacffefabd19e21a, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   continueFlagKey: save_exists
 --- !u!1 &392142051
 GameObject:

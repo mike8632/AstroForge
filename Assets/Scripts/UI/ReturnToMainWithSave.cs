@@ -18,21 +18,31 @@ public class ReturnToMainWithSave : MonoBehaviour
     [Header("Continue flag (so Continue button enables)")]
     [SerializeField] private string continueFlagKey = "save_exists";
 
-    // Call this from your Pause menu "Main Menu" button
     public void SaveAndReturnToMainMenu()
     {
-        // 1) Run your save code (if wired)
-        try { OnSaveRequested?.Invoke(); }
+        try
+        {
+            if (OnSaveRequested != null && OnSaveRequested.GetPersistentEventCount() > 0)
+            {
+                OnSaveRequested.Invoke();
+            }
+            else
+            {
+                var sm = SaveManager.Instance;
+                if (sm != null) sm.SaveGame();
+                else Debug.LogWarning("ReturnToMainWithSave: No SaveManager.Instance present to save.");
+            }
+        }
         catch (System.Exception e) { Debug.LogWarning($"Save threw: {e.Message}"); }
 
-        // 2) Mark that a save exists (for your Continue button)
+        // 2) Mark that a save exists (for Continue)
         PlayerPrefs.SetInt(continueFlagKey, 1);
         PlayerPrefs.Save();
 
-        // 3) Ensure game is unpaused before scene switch
+        // 3) Unpause
         if (Time.timeScale == 0f) Time.timeScale = 1f;
 
-        // 4) Go to main menu
+        // 4) Load main menu
         if (string.IsNullOrEmpty(mainMenuSceneName))
         {
             Debug.LogError("ReturnToMainWithSave: mainMenuSceneName is empty.");
@@ -48,11 +58,9 @@ public class ReturnToMainWithSave : MonoBehaviour
     private IEnumerator LoadMenuAsync(string sceneName)
     {
         if (loadingPanelRoot) loadingPanelRoot.SetActive(true);
-
         var op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = true;
         while (!op.isDone) yield return null;
-
         if (loadingPanelRoot) loadingPanelRoot.SetActive(false);
     }
 }

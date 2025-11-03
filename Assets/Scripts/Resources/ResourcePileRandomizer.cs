@@ -17,7 +17,6 @@ public class ResourcePileRandomizer : MonoBehaviour
 
     void Apply()
     {
-        // Don’t run on the prefab asset itself
 #if UNITY_EDITOR
         if (!Application.isPlaying && PrefabUtility.IsPartOfPrefabAsset(gameObject))
             return;

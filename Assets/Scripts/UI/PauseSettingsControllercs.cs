@@ -12,7 +12,7 @@ public class PauseSettingsController : MonoBehaviour
     [SerializeField] private GameObject settingsMenuRoot;
 
     [Header("Behavior")]
-    [SerializeField] private KeyCode legacyToggleKey = KeyCode.Escape; // used only if old Input is active
+    [SerializeField] private KeyCode legacyToggleKey = KeyCode.Escape; 
     [SerializeField] private bool pauseGame = true;      // Time.timeScale = 0 while open
     [SerializeField] private bool pauseAudio = false;    // Optional: AudioListener.pause while open
     [SerializeField] private bool unlockCursorOnOpen = true;

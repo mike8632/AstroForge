@@ -9,7 +9,7 @@ public class ResourceObjectTile : Tile
     public Color tileTint = Color.white;
 
     [Header("Prefab")]
-    public GameObject pilePrefab; // <- you can ignore if you assign via Inspector as "Instanced Game Object"
+    public GameObject pilePrefab; 
     public Vector3 prefabOffset = new Vector3(0f,0.1f,0f);
 
     // overall size multiplier you can tweak per tile asset
