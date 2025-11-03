@@ -18,49 +18,65 @@ public class ReturnToMainWithSave : MonoBehaviour
     [Header("Continue flag (so Continue button enables)")]
     [SerializeField] private string continueFlagKey = "save_exists";
 
+    private bool isLoading;
+
     public void SaveAndReturnToMainMenu()
     {
+        if (isLoading) return;
+
         try
         {
-            if (OnSaveRequested != null && OnSaveRequested.GetPersistentEventCount() > 0)
+
+            if (OnSaveRequested != null)
             {
                 OnSaveRequested.Invoke();
             }
             else
             {
-                var sm = SaveManager.Instance;
-                if (sm != null) sm.SaveGame();
-                else Debug.LogWarning("ReturnToMainWithSave: No SaveManager.Instance present to save.");
+                SaveManager.Instance?.SaveGame();
             }
         }
         catch (System.Exception e) { Debug.LogWarning($"Save threw: {e.Message}"); }
 
-        // 2) Mark that a save exists (for Continue)
+        // Mark continue available
         PlayerPrefs.SetInt(continueFlagKey, 1);
         PlayerPrefs.Save();
 
-        // 3) Unpause
+        // Unpause
         if (Time.timeScale == 0f) Time.timeScale = 1f;
 
-        // 4) Load main menu
+        SaveManager.ClearQueuedLoad();
+
+        // Go to main menu
         if (string.IsNullOrEmpty(mainMenuSceneName))
         {
             Debug.LogError("ReturnToMainWithSave: mainMenuSceneName is empty.");
             return;
         }
 
+        isLoading = true;
+
         if (loadAsync)
+        {
+            StopAllCoroutines();
             StartCoroutine(LoadMenuAsync(mainMenuSceneName));
+        }
         else
+        {
             SceneManager.LoadScene(mainMenuSceneName);
+        }
     }
 
     private IEnumerator LoadMenuAsync(string sceneName)
     {
         if (loadingPanelRoot) loadingPanelRoot.SetActive(true);
+
         var op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = true;
-        while (!op.isDone) yield return null;
+
+        while (!op.isDone)
+            yield return null;
+
         if (loadingPanelRoot) loadingPanelRoot.SetActive(false);
     }
 }

@@ -2184,9 +2184,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 933746006}
-        m_TargetAssemblyTypeName: MenuNavigator, Assembly-CSharp
-        m_MethodName: ContinueGame
+      - m_Target: {fileID: 35365155}
+        m_TargetAssemblyTypeName: SaveManager, Assembly-CSharp
+        m_MethodName: QueueLoadOnNextScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2604,14 +2604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MenuNavigator
   mainMenuRoot: {fileID: 933745999}
   settingsMenuRoot: {fileID: 1423635007}
-  loadingPanelRoot: {fileID: 0}
   gameSceneName: Game
-  loadAsync: 1
-  hideMainWhileInSettings: 1
-  continueButton: {fileID: 855028158}
-  continueFlagKey: save_exists
-  simulateSaveInEditor: 0
-  continueFallsBackToNewGame: 1
 --- !u!1 &964419631
 GameObject:
   m_ObjectHideFlags: 0

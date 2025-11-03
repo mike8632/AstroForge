@@ -12,18 +12,29 @@ public class PauseSettingsController : MonoBehaviour
     [SerializeField] private GameObject settingsMenuRoot;
 
     [Header("Behavior")]
-    [SerializeField] private KeyCode legacyToggleKey = KeyCode.Escape; 
-    [SerializeField] private bool pauseGame = true;      // Time.timeScale = 0 while open
-    [SerializeField] private bool pauseAudio = false;    // Optional: AudioListener.pause while open
+    [SerializeField] private KeyCode legacyToggleKey = KeyCode.Escape;
+    [SerializeField] private bool pauseGame = true;
+    [SerializeField] private bool pauseAudio = false;
     [SerializeField] private bool unlockCursorOnOpen = true;
 
     [Header("Optional: UI focus when opening")]
-    [SerializeField] private GameObject firstSelected;   // e.g., a "Resume" button or your Resolution dropdown
+    [SerializeField] private GameObject firstSelected;
+
+    [Header("Sub-menus inside the pause menu")]
+    [SerializeField] private GameObject[] subMenusToCloseFirst;
+
+    [Header("Keep game paused while these are active")]
+    [SerializeField] private GameObject[] pauseKeepAliveWhileActive;
 
     private float _prevTimeScale = 1f;
+    private bool _pauseApplied = false;
+
     private bool _prevAudioPaused = false;
+    private bool _audioApplied = false;
+
     private bool _wasCursorVisible = false;
     private CursorLockMode _wasCursorLock;
+    private bool _cursorApplied = false;
 
 #if ENABLE_INPUT_SYSTEM
     private InputAction _toggleAction;
@@ -41,9 +52,7 @@ public class PauseSettingsController : MonoBehaviour
         if (_toggleAction == null)
          {
             _toggleAction = new InputAction("PauseToggle");
-            // Keyboard Escape
             _toggleAction.AddBinding("<Keyboard>/escape");
-            // Gamepad Start/Options buttons
             _toggleAction.AddBinding("<Gamepad>/start");
             _toggleAction.AddBinding("<Gamepad>/select");
         }
@@ -69,7 +78,6 @@ public class PauseSettingsController : MonoBehaviour
 #else
     private void Update()
     {
-        // Old Input API path (only compiled/used when new Input System is not enabled)
         if (Input.GetKeyDown(legacyToggleKey))
             Toggle();
     }
@@ -79,6 +87,9 @@ public class PauseSettingsController : MonoBehaviour
     {
         if (!settingsMenuRoot) return;
 
+        if (CloseAnyActiveSubMenu())
+            return;
+
         if (settingsMenuRoot.activeSelf) Close();
         else Open();
     }
@@ -87,24 +98,27 @@ public class PauseSettingsController : MonoBehaviour
     {
         if (!settingsMenuRoot || settingsMenuRoot.activeSelf) return;
 
-        if (pauseGame)
+        if (pauseGame && !_pauseApplied)
         {
             _prevTimeScale = Time.timeScale;
             Time.timeScale = 0f;
+            _pauseApplied = true;
         }
 
-        if (pauseAudio)
+        if (pauseAudio && !_audioApplied)
         {
             _prevAudioPaused = AudioListener.pause;
             AudioListener.pause = true;
+            _audioApplied = true;
         }
 
-        if (unlockCursorOnOpen)
+        if (unlockCursorOnOpen && !_cursorApplied)
         {
             _wasCursorLock = Cursor.lockState;
             _wasCursorVisible = Cursor.visible;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            _cursorApplied = true;
         }
 
         settingsMenuRoot.SetActive(true);
@@ -133,18 +147,58 @@ public class PauseSettingsController : MonoBehaviour
 
         settingsMenuRoot.SetActive(false);
 
-        if (pauseGame)
+        bool keepPaused = AnyPauseKeeperActive();
+
+        if (pauseGame && _pauseApplied && !keepPaused)
+        {
             Time.timeScale = _prevTimeScale;
+            _pauseApplied = false;
+        }
 
-        if (pauseAudio)
+        if (pauseAudio && _audioApplied && !keepPaused)
+        {
             AudioListener.pause = _prevAudioPaused;
+            _audioApplied = false;
+        }
 
-        if (unlockCursorOnOpen)
+        if (unlockCursorOnOpen && _cursorApplied && !keepPaused)
         {
             Cursor.lockState = _wasCursorLock;
             Cursor.visible = _wasCursorVisible;
+            _cursorApplied = false;
         }
     }
 
     public void Resume() => Close();
+
+    private bool CloseAnyActiveSubMenu()
+    {
+        if (subMenusToCloseFirst == null || subMenusToCloseFirst.Length == 0)
+            return false;
+
+        bool closed = false;
+        for (int i = 0; i < subMenusToCloseFirst.Length; i++)
+        {
+            var go = subMenusToCloseFirst[i];
+            if (go != null && go.activeInHierarchy)
+            {
+                go.SetActive(false);
+                closed = true;
+            }
+        }
+        return closed;
+    }
+
+    private bool AnyPauseKeeperActive()
+    {
+        if (pauseKeepAliveWhileActive == null || pauseKeepAliveWhileActive.Length == 0)
+            return false;
+        for (int i = 0; i < pauseKeepAliveWhileActive.Length; i++)
+        {
+            var go = pauseKeepAliveWhileActive[i];
+            if (go != null && go.activeInHierarchy)
+                return true;
+        }
+        return false;
+    }
 }

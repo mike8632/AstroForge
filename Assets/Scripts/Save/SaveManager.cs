@@ -11,7 +11,7 @@ public class SaveManager : MonoBehaviour
 
     [Header("Options")]
     [SerializeField] private bool dontDestroyOnLoad = true;
-    [SerializeField] private bool autoLoadOnSceneStart = false; 
+    [SerializeField] private bool autoLoadOnSceneStart = false;
 
     [Header("Continue button flag (PlayerPrefs)")]
     [SerializeField] private string continueFlagKey = "save_exists";
@@ -19,14 +19,14 @@ public class SaveManager : MonoBehaviour
     [Serializable]
     private class ComponentState
     {
-        public string type; // AssemblyQualifiedName of the state struct/class
-        public string json; // JSON of that state
+        public string type;
+        public string json;
     }
 
     [Serializable]
     private class ObjectRecord
     {
-        public string id; // SaveableEntity.UniqueId
+        public string id;
         public List<ComponentState> components = new();
     }
 
@@ -40,6 +40,8 @@ public class SaveManager : MonoBehaviour
     }
 
     private static bool _pendingLoadOnNextScene = false;
+
+    public static void ClearQueuedLoad() => _pendingLoadOnNextScene = false;
 
     public static void QueueLoadOnNextScene() => _pendingLoadOnNextScene = true;
 
@@ -73,11 +75,8 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    private static string SaveFolder
-        => Path.Combine(Application.persistentDataPath, "saves");
-
-    private static string SavePath
-        => Path.Combine(SaveFolder, "slot1.json");
+    private static string SaveFolder => Path.Combine(Application.persistentDataPath, "saves");
+    private static string SavePath => Path.Combine(SaveFolder, "slot1.json");
 
     public bool SaveExists() => File.Exists(SavePath);
 
@@ -123,13 +122,10 @@ public class SaveManager : MonoBehaviour
                     var state = s.CaptureState();
                     if (state == null) continue;
 
-                    var stateType = state.GetType();
-                    var json = JsonUtility.ToJson(state);
-
                     record.components.Add(new ComponentState
                     {
-                        type = stateType.AssemblyQualifiedName,
-                        json = json
+                        type = state.GetType().AssemblyQualifiedName,
+                        json = JsonUtility.ToJson(state)
                     });
                 }
 
@@ -137,10 +133,8 @@ public class SaveManager : MonoBehaviour
                     save.objects.Add(record);
             }
 
-            var jsonAll = JsonUtility.ToJson(save, prettyPrint: true);
-            File.WriteAllText(SavePath, jsonAll);
+            File.WriteAllText(SavePath, JsonUtility.ToJson(save, true));
 
-            // Mark continue available
             PlayerPrefs.SetInt(continueFlagKey, 1);
             PlayerPrefs.Save();
 
@@ -162,27 +156,23 @@ public class SaveManager : MonoBehaviour
                 return false;
             }
 
-            var jsonAll = File.ReadAllText(SavePath);
-            var save = JsonUtility.FromJson<SaveFile>(jsonAll);
+            var save = JsonUtility.FromJson<SaveFile>(File.ReadAllText(SavePath));
             if (save == null)
             {
                 Debug.LogWarning("SaveManager: Save file unreadable.");
                 return false;
             }
 
-            // If current scene doesn't match saved scene, load it first then queue load again
             var current = SceneManager.GetActiveScene().name;
             if (!string.IsNullOrEmpty(save.sceneName) && save.sceneName != current)
             {
-                Debug.Log($"SaveManager: Loading scene '{save.sceneName}' from save (current '{current}').");
-                QueueLoadOnNextScene();
+                Debug.Log($"SaveManager: Loading saved scene '{save.sceneName}' (current '{current}').");
+                QueueLoadOnNextScene(); // will load data after the scene switches
                 SceneManager.LoadScene(save.sceneName);
                 return true;
             }
 
-            var lookup = FindObjectsOfType<SaveableEntity>(true)
-                .ToDictionary(e => e.UniqueId, e => e);
-
+            var lookup = FindObjectsOfType<SaveableEntity>(true).ToDictionary(e => e.UniqueId, e => e);
             int restoredObjects = 0;
 
             foreach (var obj in save.objects)
@@ -194,28 +184,15 @@ public class SaveManager : MonoBehaviour
                 foreach (var comp in obj.components)
                 {
                     var type = Type.GetType(comp.type);
-                    if (type == null)
-                    {
-                        Debug.LogWarning($"SaveManager: Missing type {comp.type}");
-                        continue;
-                    }
+                    if (type == null) { Debug.LogWarning($"SaveManager: Missing type {comp.type}"); continue; }
 
                     var state = JsonUtility.FromJson(comp.json, type);
 
-                    // Give the state object to every saveable on this entity that can accept it
                     foreach (var s in saveables)
                     {
-                        try
-                        {
-                            s.RestoreState(state);
-                        }
-                        catch (Exception ex)
-                        {
-                            // If the saveable expects a different state type, it will ignore this call.
-                            if (ex is InvalidCastException)
-                                continue;
-                            Debug.LogWarning($"SaveManager: Restore error on {entity.name}: {ex.Message}");
-                        }
+                        try { s.RestoreState(state); }
+                        catch (InvalidCastException) { /* ignore different state types */ }
+                        catch (Exception ex) { Debug.LogWarning($"SaveManager: Restore error on {entity.name}: {ex.Message}"); }
                     }
                 }
 
