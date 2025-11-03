@@ -1232,6 +1232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 387248107}
   - component: {fileID: 387248106}
+  - component: {fileID: 387248108}
   m_Layer: 0
   m_Name: GameUI
   m_TagString: Untagged
@@ -1272,6 +1273,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &387248108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 387248105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ef7a730a0d486488ff06b24e2a30f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReturnToMainWithSave
+  mainMenuSceneName: MainMenu
+  loadingPanelRoot: {fileID: 0}
+  loadAsync: 0
+  OnSaveRequested:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  continueFlagKey: save_exists
 --- !u!1 &392142051
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,13 +1333,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 800180376}
+  m_Children: []
   m_Father: {fileID: 1351433567}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 403}
+  m_AnchoredPosition: {x: 0, y: 247}
   m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &392142053
@@ -1891,7 +1922,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1351433568}
+      - m_Target: {fileID: 387248106}
         m_TargetAssemblyTypeName: PauseSettingsController, Assembly-CSharp
         m_MethodName: Resume
         m_Mode: 1
@@ -18103,11 +18134,11 @@ RectTransform:
   - {fileID: 608101806}
   - {fileID: 2110728318}
   - {fileID: 1639692717}
-  m_Father: {fileID: 392142052}
+  m_Father: {fileID: 1351433567}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -294}
+  m_AnchoredPosition: {x: 0, y: 97}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &800180377
@@ -19255,7 +19286,6 @@ GameObject:
   - component: {fileID: 1351433563}
   - component: {fileID: 1351433562}
   - component: {fileID: 1351433561}
-  - component: {fileID: 1351433568}
   m_Layer: 5
   m_Name: Pause Menu
   m_TagString: Untagged
@@ -19399,6 +19429,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 392142052}
+  - {fileID: 800180376}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -19406,24 +19437,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1351433568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1351433560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 598c0a8031e0cb34d91ea1bdfee2ae9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PauseSettingsController
-  settingsMenuRoot: {fileID: 0}
-  legacyToggleKey: 27
-  pauseGame: 1
-  pauseAudio: 0
-  unlockCursorOnOpen: 1
-  firstSelected: {fileID: 0}
 --- !u!1 &1464699946
 GameObject:
   m_ObjectHideFlags: 0
@@ -20857,7 +20870,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1639692719}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 387248108}
+        m_TargetAssemblyTypeName: ReturnToMainWithSave, Assembly-CSharp
+        m_MethodName: SaveAndReturnToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainMenu
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1639692719
 MonoBehaviour:
   m_ObjectHideFlags: 0
