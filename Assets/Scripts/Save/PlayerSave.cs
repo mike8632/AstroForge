@@ -29,8 +29,16 @@ public class PlayerSave : MonoBehaviour, ISaveable
 
             transform.SetPositionAndRotation(d.position, d.rotation);
 
-            if (rb) { rb.linearVelocity = Vector3.zero; rb.angularVelocity = Vector3.zero; }
-            if (rb2d) { rb2d.linearVelocity = Vector2.zero; rb2d.angularVelocity = 0f; }
+            if (rb)
+            {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+            if (rb2d)
+            {
+                rb2d.velocity = Vector2.zero;
+                rb2d.angularVelocity = 0f;
+            }
         }
     }
 }
