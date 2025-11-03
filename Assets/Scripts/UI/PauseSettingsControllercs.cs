@@ -1,7 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 public class PauseSettingsController : MonoBehaviour
 {
@@ -9,18 +12,22 @@ public class PauseSettingsController : MonoBehaviour
     [SerializeField] private GameObject settingsMenuRoot;
 
     [Header("Behavior")]
-    [SerializeField] private KeyCode toggleKey = KeyCode.Escape;
+    [SerializeField] private KeyCode legacyToggleKey = KeyCode.Escape; // used only if old Input is active
     [SerializeField] private bool pauseGame = true;      // Time.timeScale = 0 while open
     [SerializeField] private bool pauseAudio = false;    // Optional: AudioListener.pause while open
     [SerializeField] private bool unlockCursorOnOpen = true;
 
     [Header("Optional: UI focus when opening")]
-    [SerializeField] private GameObject firstSelected;   // e.g., your ResolutionDropdown or a "Resume" button
+    [SerializeField] private GameObject firstSelected;   // e.g., a "Resume" button or your Resolution dropdown
 
     private float _prevTimeScale = 1f;
     private bool _prevAudioPaused = false;
     private bool _wasCursorVisible = false;
     private CursorLockMode _wasCursorLock;
+
+#if ENABLE_INPUT_SYSTEM
+    private InputAction _toggleAction;
+#endif
 
     private void Start()
     {
@@ -28,11 +35,45 @@ public class PauseSettingsController : MonoBehaviour
             settingsMenuRoot.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+#if ENABLE_INPUT_SYSTEM
+        if (_toggleAction == null)
+         {
+            _toggleAction = new InputAction("PauseToggle");
+            // Keyboard Escape
+            _toggleAction.AddBinding("<Keyboard>/escape");
+            // Gamepad Start/Options buttons
+            _toggleAction.AddBinding("<Gamepad>/start");
+            _toggleAction.AddBinding("<Gamepad>/select");
+        }
+
+        _toggleAction.performed += OnTogglePerformed;
+        _toggleAction.Enable();
+#endif
+    }
+
+    private void OnDisable()
+    {
+#if ENABLE_INPUT_SYSTEM
+        if (_toggleAction != null)
+        {
+            _toggleAction.performed -= OnTogglePerformed;
+            _toggleAction.Disable();
+        }
+#endif
+    }
+
+#if ENABLE_INPUT_SYSTEM
+    private void OnTogglePerformed(InputAction.CallbackContext ctx) => Toggle();
+#else
     private void Update()
     {
-        if (Input.GetKeyDown(toggleKey))
+        // Old Input API path (only compiled/used when new Input System is not enabled)
+        if (Input.GetKeyDown(legacyToggleKey))
             Toggle();
     }
+#endif
 
     public void Toggle()
     {
@@ -46,21 +87,18 @@ public class PauseSettingsController : MonoBehaviour
     {
         if (!settingsMenuRoot || settingsMenuRoot.activeSelf) return;
 
-        // Pause gameplay
         if (pauseGame)
         {
             _prevTimeScale = Time.timeScale;
             Time.timeScale = 0f;
         }
 
-        // Pause audio if desired
         if (pauseAudio)
         {
             _prevAudioPaused = AudioListener.pause;
             AudioListener.pause = true;
         }
 
-        // Cursor state
         if (unlockCursorOnOpen)
         {
             _wasCursorLock = Cursor.lockState;
@@ -71,15 +109,12 @@ public class PauseSettingsController : MonoBehaviour
 
         settingsMenuRoot.SetActive(true);
 
-        // Set UI focus
         var es = EventSystem.current;
         if (es)
         {
             GameObject target = firstSelected;
-
             if (!target)
             {
-                // Try to find any Selectable under the settings menu
                 var selectable = settingsMenuRoot.GetComponentInChildren<Selectable>(true);
                 if (selectable) target = selectable.gameObject;
             }
@@ -98,7 +133,6 @@ public class PauseSettingsController : MonoBehaviour
 
         settingsMenuRoot.SetActive(false);
 
-        // Restore gameplay
         if (pauseGame)
             Time.timeScale = _prevTimeScale;
 
@@ -112,6 +146,5 @@ public class PauseSettingsController : MonoBehaviour
         }
     }
 
-    // Optional: hook a "Resume" or "Go Back" button to this
     public void Resume() => Close();
 }
