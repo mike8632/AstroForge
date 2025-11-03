@@ -2184,9 +2184,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 35365155}
-        m_TargetAssemblyTypeName: SaveManager, Assembly-CSharp
-        m_MethodName: QueueLoadOnNextScene
+      - m_Target: {fileID: 933746006}
+        m_TargetAssemblyTypeName: MenuNavigator, Assembly-CSharp
+        m_MethodName: ContinueGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
