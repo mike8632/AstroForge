@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b56a2716d1c3f14aa84ce249330db80, type: 3}
   m_Name: GoldTile
   m_EditorClassIdentifier: Assembly-CSharp::ResourceObjectTile
-  m_Sprite: {fileID: 21300000, guid: b4fb034cc412a5941bab1434b4a0ccc4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 545666e4e6e396146b6ab63bfa9ace1e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
@@ -31,12 +31,12 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 1
-  m_InstancedGameObject: {fileID: 9082016689451897281, guid: f4774ce184897694285a405bdf25b89d, type: 3}
+  m_InstancedGameObject: {fileID: 9082016689451897281, guid: 46ef3139f920ab14d9d53e46df9b44a4, type: 3}
   m_Flags: 1
   m_ColliderType: 1
-  decalSprite: {fileID: 21300000, guid: b4fb034cc412a5941bab1434b4a0ccc4, type: 3}
+  decalSprite: {fileID: 21300000, guid: 545666e4e6e396146b6ab63bfa9ace1e, type: 3}
   tileTint: {r: 1, g: 1, b: 1, a: 1}
-  pilePrefab: {fileID: 9082016689451897281, guid: e1ef314c3dd0a0145907e07c1f986633, type: 3}
+  pilePrefab: {fileID: 9082016689451897281, guid: 46ef3139f920ab14d9d53e46df9b44a4, type: 3}
   prefabOffset: {x: 0, y: 0.1, z: 0}
   prefabScaleMultiplier: 1
   rotationVariance: 8
