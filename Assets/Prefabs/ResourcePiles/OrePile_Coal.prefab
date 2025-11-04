@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1895915711798126113}
   - component: {fileID: -5618705198692171786}
+  - component: {fileID: 8864471257530702902}
   m_Layer: 0
   m_Name: OrePile_Coal
   m_TagString: Untagged
@@ -90,3 +91,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8864471257530702902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 65644140336772286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5763a12e0f25641409eff1770f09f7fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourcePileRandomizer
+  rotationVariance: 10
+  scaleVariance: 0.08
