@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b56a2716d1c3f14aa84ce249330db80, type: 3}
-  m_Name: IronTile
+  m_Name: CopperTile
   m_EditorClassIdentifier: Assembly-CSharp::ResourceObjectTile
-  m_Sprite: {fileID: 21300000, guid: a1178db5629ffa14695a378e84bb47fc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 11f567abff282184891316e8e5dda9d5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
@@ -31,10 +31,10 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 1
-  m_InstancedGameObject: {fileID: 9082016689451897281, guid: e1ef314c3dd0a0145907e07c1f986633, type: 3}
+  m_InstancedGameObject: {fileID: 9082016689451897281, guid: 6fbb3e4a1b83e7144972c3cbeddec36e, type: 3}
   m_Flags: 1
   m_ColliderType: 1
-  decalSprite: {fileID: 21300000, guid: a1178db5629ffa14695a378e84bb47fc, type: 3}
+  decalSprite: {fileID: 21300000, guid: 11f567abff282184891316e8e5dda9d5, type: 3}
   tileTint: {r: 1, g: 1, b: 1, a: 1}
   pilePrefab: {fileID: 9082016689451897281, guid: e1ef314c3dd0a0145907e07c1f986633, type: 3}
   prefabOffset: {x: 0, y: 0.1, z: 0}
