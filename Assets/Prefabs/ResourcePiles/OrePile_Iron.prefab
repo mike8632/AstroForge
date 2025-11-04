@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 799383192702503208}
   - component: {fileID: 7720648053435484338}
-  - component: {fileID: 8962453548247418434}
+  - component: {fileID: 3024781420420066816}
   m_Layer: 0
   m_Name: OrePile_Iron
   m_TagString: Untagged
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8962453548247418434
+--- !u!114 &3024781420420066816
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
