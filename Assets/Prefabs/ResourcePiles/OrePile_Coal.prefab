@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -6590887041409284961}
   - component: {fileID: -4076633503703045864}
   - component: {fileID: 5182853410143044808}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: OrePile_Coal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,8 +79,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 245416773
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b4fb034cc412a5941bab1434b4a0ccc4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

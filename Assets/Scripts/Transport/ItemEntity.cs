@@ -32,9 +32,5 @@ public class ItemEntity : MonoBehaviour
         {
             SetDirection(belt.DirectionVector);
         }
-        else if (other.TryGetComponent<Collector>(out var collector))
-        {
-            collector.Collect(this);
-        }
     }
 }
