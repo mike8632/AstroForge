@@ -12,15 +12,18 @@ public class ItemEntity : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _rb.isKinematic = true;
-        _rb.gravityScale = 0;
+        _rb.bodyType = RigidbodyType2D.Kinematic;
+        _rb.gravityScale = 0f;
+        _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         var col = GetComponent<Collider2D>();
         col.isTrigger = true;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        _rb.MovePosition(_rb.position + _dir * speed * Time.deltaTime);
+        if (_rb == null) return;
+        if (_dir.sqrMagnitude > 0f)
+            _rb.MovePosition(_rb.position + _dir * speed * Time.fixedDeltaTime);
     }
 
     public void SetDirection(Vector2 d) => _dir = d.normalized;

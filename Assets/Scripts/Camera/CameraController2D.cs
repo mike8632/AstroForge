@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.InputSystem; // NEW input system
+using UnityEngine.InputSystem; 
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController2D : MonoBehaviour
@@ -18,42 +19,39 @@ public class CameraController2D : MonoBehaviour
     public Tilemap clampToTilemap;
     public float clampPadding = 1f;
 
+    [Header("Input Handling")]
+    [Tooltip("Ignore camera input when the pointer is over UI.")]
+    public bool blockWhenPointerOverUI = true;
+
     Camera cam;
     bool dragging;
     Vector3 dragOriginWorld;
-    bool shuttingDown;
 
     void Awake()
     {
         cam = GetComponent<Camera>();
-        if (cam != null) cam.orthographic = true;
-    }
-
-    void OnDisable()
-    {
-        // During scene unload, components may be destroyed mid-frame
-        dragging = false;
-        shuttingDown = true;
-    }
-
-    void OnApplicationQuit()
-    {
-        shuttingDown = true;
+        cam.orthographic = true;
     }
 
     void Update()
     {
-        if (shuttingDown || cam == null) return;
-
         HandlePan();
         HandleDrag();
         HandleZoom();
         ClampInsideTilemap();
     }
 
+    bool IsPointerOverUI()
+    {
+        if (!blockWhenPointerOverUI) return false;
+        if (EventSystem.current == null) return false;
+        return EventSystem.current.IsPointerOverGameObject();
+    }
+
     void HandlePan()
     {
-        if (cam == null) return;
+        if (IsPointerOverUI()) return;
+
         var kb = Keyboard.current;
         if (kb == null) return;
 
@@ -68,7 +66,8 @@ public class CameraController2D : MonoBehaviour
 
     void HandleDrag()
     {
-        if (cam == null) return;
+        if (IsPointerOverUI()) return;
+
         var mouse = Mouse.current;
         if (mouse == null) return;
 
@@ -90,11 +89,12 @@ public class CameraController2D : MonoBehaviour
 
     void HandleZoom()
     {
-        if (cam == null) return;
+        if (IsPointerOverUI()) return;
+
         var mouse = Mouse.current;
         if (mouse == null) return;
 
-        float scrollY = mouse.scroll.ReadValue().y; // + op / - ned
+        float scrollY = mouse.scroll.ReadValue().y; // + up / - down
         if (Mathf.Abs(scrollY) > 0.01f)
         {
             cam.orthographicSize = Mathf.Clamp(
@@ -106,7 +106,6 @@ public class CameraController2D : MonoBehaviour
 
     void ClampInsideTilemap()
     {
-        if (cam == null) return;
         if (!clampToTilemap) return;
 
         var bounds = clampToTilemap.localBounds;

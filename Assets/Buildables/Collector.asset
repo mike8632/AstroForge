@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429aad26b69691a4f8243485082e0903, type: 3}
   m_Name: Collector
   m_EditorClassIdentifier: Assembly-CSharp::BuildableDefinition
-  displayName: 
-  prefab: {fileID: 0}
+  displayName: Collector
+  prefab: {fileID: 8859249946427451322, guid: cc921cb49e27be14a9f7761dd15df42c, type: 3}
   footprint: {x: 1, y: 1}
-  placementRule: 0
+  placementRule: 2
   allowedResourceTypes: 
   cost:
   - type: 4
