@@ -39,6 +39,6 @@ MonoBehaviour:
   pilePrefab: {fileID: 4719161725061074690, guid: 71e3981aa527c6a47866ad6520b81492, type: 3}
   prefabOffset: {x: 0, y: 0.1, z: 0}
   prefabScaleMultiplier: 1
-  rotationVariance: 15
-  scaleVariance: 0.06
-  positionJitter: 0.08
+  rotationVariance: 8
+  scaleVariance: 0.08
+  positionJitter: 0.18

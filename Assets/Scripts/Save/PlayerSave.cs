@@ -27,25 +27,17 @@ public class PlayerSave : MonoBehaviour, ISaveable
             var rb = GetComponent<Rigidbody>();
             var rb2d = GetComponent<Rigidbody2D>();
 
+            transform.SetPositionAndRotation(d.position, d.rotation);
+
             if (rb)
             {
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
-                rb.position = d.position;
-                rb.rotation = d.rotation;
-                rb.Sleep();
             }
-            else if (rb2d)
+            if (rb2d)
             {
                 rb2d.linearVelocity = Vector2.zero;
                 rb2d.angularVelocity = 0f;
-                rb2d.position = new Vector2(d.position.x, d.position.y);
-                rb2d.rotation = d.rotation.eulerAngles.z;
-                rb2d.Sleep();
-            }
-            else
-            {
-                transform.SetPositionAndRotation(d.position, d.rotation);
             }
         }
     }

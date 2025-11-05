@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429aad26b69691a4f8243485082e0903, type: 3}
   m_Name: Miner
   m_EditorClassIdentifier: Assembly-CSharp::BuildableDefinition
-  displayName: Miner
-  prefab: {fileID: 8859249946427451322, guid: 38b9cda3c8ab12d42962acd3bbf8d1f3, type: 3}
+  displayName: 
+  prefab: {fileID: 0}
   footprint: {x: 1, y: 1}
   placementRule: 1
   allowedResourceTypes: 0000000001000000020000000300000004000000

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -6590887041409284961}
   - component: {fileID: 1102843370794144236}
   - component: {fileID: -3464185190417923274}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: OrePile_Gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,8 +79,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 923779145
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 545666e4e6e396146b6ab63bfa9ace1e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -107,7 +107,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourcePileRandomizer
   rotationVariance: 10
   scaleVariance: 0.08
-  seed: 3
 --- !u!114 &1102843370794144236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,10 +122,6 @@ MonoBehaviour:
   type: 3
   infinite: 1
   amount: 100
-  OnDepleted:
-    m_PersistentCalls:
-      m_Calls: []
-  destroyOnDeplete: 1
 --- !u!58 &-3464185190417923274
 CircleCollider2D:
   m_ObjectHideFlags: 0
