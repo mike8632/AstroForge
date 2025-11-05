@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.InputSystem; // NEW input system
+using UnityEngine.InputSystem; 
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController2D : MonoBehaviour
@@ -17,6 +18,10 @@ public class CameraController2D : MonoBehaviour
     [Header("Clamp to Tilemap (optional)")]
     public Tilemap clampToTilemap;
     public float clampPadding = 1f;
+
+    [Header("Input Handling")]
+    [Tooltip("Ignore camera input when the pointer is over UI.")]
+    public bool blockWhenPointerOverUI = true;
 
     Camera cam;
     bool dragging;
@@ -36,8 +41,17 @@ public class CameraController2D : MonoBehaviour
         ClampInsideTilemap();
     }
 
+    bool IsPointerOverUI()
+    {
+        if (!blockWhenPointerOverUI) return false;
+        if (EventSystem.current == null) return false;
+        return EventSystem.current.IsPointerOverGameObject();
+    }
+
     void HandlePan()
     {
+        if (IsPointerOverUI()) return;
+
         var kb = Keyboard.current;
         if (kb == null) return;
 
@@ -52,6 +66,8 @@ public class CameraController2D : MonoBehaviour
 
     void HandleDrag()
     {
+        if (IsPointerOverUI()) return;
+
         var mouse = Mouse.current;
         if (mouse == null) return;
 
@@ -73,10 +89,12 @@ public class CameraController2D : MonoBehaviour
 
     void HandleZoom()
     {
+        if (IsPointerOverUI()) return;
+
         var mouse = Mouse.current;
         if (mouse == null) return;
 
-        float scrollY = mouse.scroll.ReadValue().y; // + op / - ned
+        float scrollY = mouse.scroll.ReadValue().y; // + up / - down
         if (Mathf.Abs(scrollY) > 0.01f)
         {
             cam.orthographicSize = Mathf.Clamp(

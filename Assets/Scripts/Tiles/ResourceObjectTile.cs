@@ -20,6 +20,15 @@ public class ResourceObjectTile : Tile
     [Range(0f, 0.5f)] public float scaleVariance = 0.06f;
     [Range(0f, 0.5f)] public float positionJitter = 0.08f;
 
+    public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
+    {
+        tileData.sprite = decalSprite;
+        tileData.color = tileTint;
+        tileData.flags = TileFlags.LockColor; // allow StartUp to change transform
+        tileData.colliderType = Tile.ColliderType.None;
+        tileData.gameObject = pilePrefab; // instanced per-cell prefab
+    }
+
     public override bool StartUp(Vector3Int position, ITilemap tilemap, GameObject go)
     {
         if (go != null)
@@ -45,9 +54,8 @@ public class ResourceObjectTile : Tile
                 var initial = t.localScale;
                 t.localRotation = Quaternion.Euler(0f, 0f, rot);
                 t.localScale = new Vector3(initial.x * finalMul, initial.y * finalMul, initial.z);
-
-                // Add jitter and configurable offset in local space
-                t.localPosition += prefabOffset + new Vector3(jx, jy, 0f);
+                // set instead of add to avoid cumulative offset on refresh
+                t.localPosition = prefabOffset + new Vector3(jx, jy, 0f);
             }
         }
         return base.StartUp(position, tilemap, go);

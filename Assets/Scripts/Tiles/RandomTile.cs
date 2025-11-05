@@ -24,10 +24,9 @@ public class RandomTile : TileBase
     [Tooltip("Farve der multipliceres med sprite.")]
     public Color m_Color = Color.white;
 
-    // Cached data for performance and null-safety
     [NonSerialized] private Sprite[] _spritesNonNull;
     [NonSerialized] private Sprite[] _variantSprites;
-    [NonSerialized] private int[] _variantCumWeights; // cumulative weights
+    [NonSerialized] private int[] _variantCumWeights; 
     [NonSerialized] private int _variantTotalWeight;
 
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
@@ -36,19 +35,26 @@ public class RandomTile : TileBase
         tileData.flags = TileFlags.LockTransform;
         tileData.colliderType = Tile.ColliderType.None;
 
-        // Prefer weighted variants if available (using cached data)
+
+        if ((_variantSprites == null || _variantCumWeights == null) && variants != null && variants.Length > 0)
+            RebuildVariantCache();
+        if (_spritesNonNull == null && m_Sprites != null && m_Sprites.Length > 0)
+            RebuildSpriteCache();
+
         if (_variantTotalWeight > 0 && _variantSprites != null && _variantCumWeights != null)
         {
             int h = Hash3(position.x, position.y, seed);
             int roll = (int)((uint)h % (uint)_variantTotalWeight);
 
             int idx = Array.BinarySearch(_variantCumWeights, roll);
-            if (idx < 0) idx = ~idx; // first index with cumWeight > roll
+            if (idx < 0) idx = ~idx; 
+            else idx += 1; 
+            if (idx >= _variantSprites.Length) idx = _variantSprites.Length - 1;
+
             tileData.sprite = _variantSprites[idx];
             return;
         }
 
-        // Fallback to uniform selection from non-null sprites
         var sprites = _spritesNonNull ?? m_Sprites;
         if (sprites == null || sprites.Length == 0)
             return;
@@ -57,7 +63,6 @@ public class RandomTile : TileBase
         var sprite = sprites[index];
         if (sprite == null)
         {
-            // Safety: find the next non-null sprite (should rarely run if cache exists)
             for (int i = 1; i < sprites.Length; i++)
             {
                 int j = (index + i) % sprites.Length;
@@ -72,12 +77,11 @@ public class RandomTile : TileBase
         tileData.sprite = sprite;
     }
 
-    //2D hash with seed mixed in (FNV-1a style)
     private static int Hash3(int x, int y, int s)
     {
         unchecked
         {
-            uint h = 2166136261u;          // FNV-1a hash seed
+            uint h = 2166136261u;          
             h = (h ^ (uint)x) * 16777619u;
             h = (h ^ (uint)y) * 16777619u;
             h = (h ^ (uint)s) * 16777619u;
@@ -99,6 +103,12 @@ public class RandomTile : TileBase
 
     private void RebuildCache()
     {
+        RebuildSpriteCache();
+        RebuildVariantCache();
+    }
+
+    private void RebuildSpriteCache()
+    {
         if (m_Sprites != null && m_Sprites.Length > 0)
         {
             var list = new List<Sprite>(m_Sprites.Length);
@@ -113,7 +123,10 @@ public class RandomTile : TileBase
         {
             _spritesNonNull = null;
         }
+    }
 
+    private void RebuildVariantCache()
+    {
         if (variants != null && variants.Length > 0)
         {
             var spr = new List<Sprite>(variants.Length);

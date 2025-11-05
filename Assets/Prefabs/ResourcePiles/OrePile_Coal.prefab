@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourcePileRandomizer
   rotationVariance: 10
   scaleVariance: 0.08
+  seed: 0
 --- !u!114 &-4076633503703045864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,6 +123,10 @@ MonoBehaviour:
   type: 0
   infinite: 1
   amount: 100
+  OnDepleted:
+    m_PersistentCalls:
+      m_Calls: []
+  destroyOnDeplete: 1
 --- !u!58 &5182853410143044808
 CircleCollider2D:
   m_ObjectHideFlags: 0
