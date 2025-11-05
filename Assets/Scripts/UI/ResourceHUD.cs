@@ -1,36 +1,33 @@
-using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class ResourceHUD : MonoBehaviour
 {
-    [SerializeField] private Text text;
-    [SerializeField] private ResourceType[] showOrder =
-    {
-        ResourceType.Coal, ResourceType.IronOre, ResourceType.CopperOre, ResourceType.GoldOre, ResourceType.Stone
-    };
+    [SerializeField] TMP_Text text; // Assign a TextMeshProUGUI in the Inspector
 
-    private void Awake()
+    void Start()
     {
-        if (!text) text = GetComponent<Text>();
-        ResourceBank.Instance?.onChanged.AddListener(UpdateView);
-        UpdateView();
+        var bank = ResourceBank.Instance;
+        if (bank != null) bank.onChanged.AddListener(Refresh);
+        Refresh(); // show zeros immediately
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
-        if (ResourceBank.Instance) ResourceBank.Instance.onChanged.RemoveListener(UpdateView);
+        var bank = ResourceBank.Instance;
+        if (bank != null) bank.onChanged.RemoveListener(Refresh);
     }
 
-    public void UpdateView()
+    void Refresh()
     {
-        if (!text || !ResourceBank.Instance) return;
-        var sb = new StringBuilder();
-        foreach (var t in showOrder)
-        {
-            int v = ResourceBank.Instance.Get(t);
-            sb.Append(t).Append(": ").Append(v).Append("  ");
-        }
-        text.text = sb.ToString();
+        var b = ResourceBank.Instance;
+        if (b == null) { text.text = "-"; return; }
+
+        text.text =
+            $"Stone: {b.Get(ResourceType.Stone)}\n" +
+            $"Coal: {b.Get(ResourceType.Coal)}\n" +
+            $"Iron: {b.Get(ResourceType.IronOre)}\n" +
+            $"Copper: {b.Get(ResourceType.CopperOre)}\n" +
+            $"Gold: {b.Get(ResourceType.GoldOre)}";
     }
 }
