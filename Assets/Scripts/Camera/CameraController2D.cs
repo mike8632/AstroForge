@@ -21,15 +21,30 @@ public class CameraController2D : MonoBehaviour
     Camera cam;
     bool dragging;
     Vector3 dragOriginWorld;
+    bool shuttingDown;
 
     void Awake()
     {
         cam = GetComponent<Camera>();
-        cam.orthographic = true;
+        if (cam != null) cam.orthographic = true;
+    }
+
+    void OnDisable()
+    {
+        // During scene unload, components may be destroyed mid-frame
+        dragging = false;
+        shuttingDown = true;
+    }
+
+    void OnApplicationQuit()
+    {
+        shuttingDown = true;
     }
 
     void Update()
     {
+        if (shuttingDown || cam == null) return;
+
         HandlePan();
         HandleDrag();
         HandleZoom();
@@ -38,6 +53,7 @@ public class CameraController2D : MonoBehaviour
 
     void HandlePan()
     {
+        if (cam == null) return;
         var kb = Keyboard.current;
         if (kb == null) return;
 
@@ -52,6 +68,7 @@ public class CameraController2D : MonoBehaviour
 
     void HandleDrag()
     {
+        if (cam == null) return;
         var mouse = Mouse.current;
         if (mouse == null) return;
 
@@ -73,6 +90,7 @@ public class CameraController2D : MonoBehaviour
 
     void HandleZoom()
     {
+        if (cam == null) return;
         var mouse = Mouse.current;
         if (mouse == null) return;
 
@@ -88,6 +106,7 @@ public class CameraController2D : MonoBehaviour
 
     void ClampInsideTilemap()
     {
+        if (cam == null) return;
         if (!clampToTilemap) return;
 
         var bounds = clampToTilemap.localBounds;
