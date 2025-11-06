@@ -9,11 +9,11 @@ public class ResourceObjectTile : Tile
     public Color tileTint = Color.white;
 
     [Header("Prefab")]
-    public GameObject pilePrefab; 
+    public GameObject pilePrefab;
     public Vector3 prefabOffset = new Vector3(0f, 0.1f, 0f);
 
     // overall size multiplier you can tweak per tile asset
-    [Range(0.1f, 2f)] public float prefabScaleMultiplier = 1f;
+    [Range(0.1f, 2f)] public float prefabScaleMultiplier = 0.7f;
 
     [Header("Randomization")]
     [Range(0f, 45f)] public float rotationVariance = 15f;

@@ -1,10 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
-#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
-#endif
 
 public class PauseSettingsController : MonoBehaviour
 {
@@ -12,7 +9,6 @@ public class PauseSettingsController : MonoBehaviour
     [SerializeField] private GameObject settingsMenuRoot;
 
     [Header("Behavior")]
-    [SerializeField] private KeyCode legacyToggleKey = KeyCode.Escape;
     [SerializeField] private bool pauseGame = true;
     [SerializeField] private bool pauseAudio = false;
     [SerializeField] private bool unlockCursorOnOpen = true;
@@ -36,9 +32,7 @@ public class PauseSettingsController : MonoBehaviour
     private CursorLockMode _wasCursorLock;
     private bool _cursorApplied = false;
 
-#if ENABLE_INPUT_SYSTEM
     private InputAction _toggleAction;
-#endif
 
     private void Start()
     {
@@ -48,9 +42,8 @@ public class PauseSettingsController : MonoBehaviour
 
     private void OnEnable()
     {
-#if ENABLE_INPUT_SYSTEM
         if (_toggleAction == null)
-         {
+        {
             _toggleAction = new InputAction("PauseToggle");
             _toggleAction.AddBinding("<Keyboard>/escape");
             _toggleAction.AddBinding("<Gamepad>/start");
@@ -59,29 +52,18 @@ public class PauseSettingsController : MonoBehaviour
 
         _toggleAction.performed += OnTogglePerformed;
         _toggleAction.Enable();
-#endif
     }
 
     private void OnDisable()
     {
-#if ENABLE_INPUT_SYSTEM
         if (_toggleAction != null)
         {
             _toggleAction.performed -= OnTogglePerformed;
             _toggleAction.Disable();
         }
-#endif
     }
 
-#if ENABLE_INPUT_SYSTEM
     private void OnTogglePerformed(InputAction.CallbackContext ctx) => Toggle();
-#else
-    private void Update()
-    {
-        if (Input.GetKeyDown(legacyToggleKey))
-            Toggle();
-    }
-#endif
 
     public void Toggle()
     {

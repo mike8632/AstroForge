@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0259cf54e0b6dba40ac48835db667bb5, type: 3}
+  m_Script: {fileID: 11500000, guid: 54448f0edbd5f0545918b7a46a3c734b, type: 3}
   m_Name: RandomTile
   m_EditorClassIdentifier: Assembly-CSharp::RandomTile
   m_Sprites:
@@ -22,5 +22,5 @@ MonoBehaviour:
   - {fileID: 7094987411578876645, guid: 526cbcf25ebf44d408875a31bab355ad, type: 3}
   - {fileID: -2540999573501348297, guid: 8f5a517560cd31646a8079a97327e503, type: 3}
   variants: []
-  seed: 3
+  seed: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b56a2716d1c3f14aa84ce249330db80, type: 3}
   m_Name: Belt
   m_EditorClassIdentifier: Assembly-CSharp::ResourceObjectTile
-  m_Sprite: {fileID: 21300000, guid: 6dc92dc900f06ea4bbd7c05ca1137078, type: 3}
+  m_Sprite: {fileID: 21300000, guid: abcf00a861846744fb79d8eb37a97f14, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
@@ -34,11 +34,11 @@ MonoBehaviour:
   m_InstancedGameObject: {fileID: 8859249946427451322, guid: 3f8ee88bf485438499634d1c3ba0e373, type: 3}
   m_Flags: 1
   m_ColliderType: 1
-  decalSprite: {fileID: 21300000, guid: 6dc92dc900f06ea4bbd7c05ca1137078, type: 3}
+  decalSprite: {fileID: 21300000, guid: abcf00a861846744fb79d8eb37a97f14, type: 3}
   tileTint: {r: 1, g: 1, b: 1, a: 1}
   pilePrefab: {fileID: 8859249946427451322, guid: 3f8ee88bf485438499634d1c3ba0e373, type: 3}
-  prefabOffset: {x: 0, y: 0.1, z: 0}
+  prefabOffset: {x: 0, y: 0, z: 0}
   prefabScaleMultiplier: 1
-  rotationVariance: 8
-  scaleVariance: 0.08
-  positionJitter: 0.18
+  rotationVariance: 0
+  scaleVariance: 0
+  positionJitter: 0

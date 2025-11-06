@@ -37,8 +37,8 @@ MonoBehaviour:
   decalSprite: {fileID: 21300000, guid: 4dc1afecb27bf724da3e6c71fc4dcf98, type: 3}
   tileTint: {r: 1, g: 1, b: 1, a: 1}
   pilePrefab: {fileID: 8859249946427451322, guid: 38b9cda3c8ab12d42962acd3bbf8d1f3, type: 3}
-  prefabOffset: {x: 0, y: 0.1, z: 0}
+  prefabOffset: {x: 0, y: 0, z: 0}
   prefabScaleMultiplier: 1
-  rotationVariance: 8
-  scaleVariance: 0.08
-  positionJitter: 0.18
+  rotationVariance: 0
+  scaleVariance: 0
+  positionJitter: 0
