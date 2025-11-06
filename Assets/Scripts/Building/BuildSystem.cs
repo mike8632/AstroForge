@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -37,6 +38,15 @@ public class BuildSystem : MonoBehaviour
 
     public void SetSelectedIndex(int i)
     {
+        // Toggle off if pressing the same slot
+        if (i == selectedIndex)
+        {
+            selectedIndex = -1;
+            HideGhost();
+            SelectionChanged?.Invoke(selectedIndex);
+            return;
+        }
+
         if (buildables == null || i < 0 || i >= buildables.Count)
         {
             selectedIndex = -1;
@@ -80,6 +90,12 @@ public class BuildSystem : MonoBehaviour
         if (selectedIndex >= 0) CreateGhost(); else HideGhost();
     }
 
+    private bool IsPointerOverUI()
+    {
+        var es = EventSystem.current;
+        return es != null && es.IsPointerOverGameObject();
+    }
+
     private void Update()
     {
         if (_shuttingDown) return;
@@ -87,6 +103,10 @@ public class BuildSystem : MonoBehaviour
         if (worldCamera == null)
             worldCamera = Camera.main;
         if (worldCamera == null) return; // scene changed and no camera yet
+
+        // Block while paused or hovering UI
+        if (Time.timeScale == 0f) return;
+        if (IsPointerOverUI()) return;
 
         HandleHotkeys();
         if (!Sel) return;

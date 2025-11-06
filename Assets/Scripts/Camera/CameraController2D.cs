@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.InputSystem; // NEW input system
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController2D : MonoBehaviour
@@ -41,9 +42,28 @@ public class CameraController2D : MonoBehaviour
         shuttingDown = true;
     }
 
+    bool IsPointerOverUI()
+    {
+        var es = EventSystem.current;
+        return es != null && es.IsPointerOverGameObject();
+    }
+
+    bool Blocked()
+    {
+        // Block when paused or pointer is over UI
+        return Time.timeScale == 0f || IsPointerOverUI();
+    }
+
     void Update()
     {
         if (shuttingDown || cam == null) return;
+
+        if (Blocked())
+        {
+            // cancel active drag so it can't persist through pause/menu
+            dragging = false;
+            return;
+        }
 
         HandlePan();
         HandleDrag();
@@ -53,7 +73,7 @@ public class CameraController2D : MonoBehaviour
 
     void HandlePan()
     {
-        if (cam == null) return;
+        if (cam == null || Blocked()) return;
         var kb = Keyboard.current;
         if (kb == null) return;
 
@@ -68,7 +88,7 @@ public class CameraController2D : MonoBehaviour
 
     void HandleDrag()
     {
-        if (cam == null) return;
+        if (cam == null || Blocked()) { dragging = false; return; }
         var mouse = Mouse.current;
         if (mouse == null) return;
 
@@ -90,7 +110,7 @@ public class CameraController2D : MonoBehaviour
 
     void HandleZoom()
     {
-        if (cam == null) return;
+        if (cam == null || Blocked()) return;
         var mouse = Mouse.current;
         if (mouse == null) return;
 
