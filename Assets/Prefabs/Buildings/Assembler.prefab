@@ -233,12 +233,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assembler
   recipes:
-  - input: 3
+  - input: 5
     inputCount: 1
-    output: 7
+    output: 0
     outputCount: 1
     craftSeconds: 0.01
-  - input: 5
+  - input: 6
+    inputCount: 1
+    output: 0
+    outputCount: 1
+    craftSeconds: 0.01
+  - input: 7
     inputCount: 1
     output: 0
     outputCount: 1

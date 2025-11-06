@@ -25,10 +25,10 @@ public class ResourceHUD : MonoBehaviour
 
         text.text =
             $"Stone: {b.Get(ResourceType.Stone)}\n" +
-            $"Coal: {b.Get(ResourceType.Coal)}\n" +
-            $"Iron: {b.Get(ResourceType.IronOre)}\n" +
-            $"Copper: {b.Get(ResourceType.CopperOre)}\n" +
-            $"Gold: {b.Get(ResourceType.GoldOre)}\n" +
+            $"Coal Ore: {b.Get(ResourceType.Coal)}\n" +
+            $"Iron Ore: {b.Get(ResourceType.IronOre)}\n" +
+            $"Copper Ore: {b.Get(ResourceType.CopperOre)}\n" +
+            $"Gold Ore: {b.Get(ResourceType.GoldOre)}\n" +
             $"Iron Ingot: {b.Get(ResourceType.IronIngot)}\n" +
             $"Copper Ingot: {b.Get(ResourceType.CopperIngot)}\n" +
             $"Gold Ingot: {b.Get(ResourceType.GoldIngot)}";

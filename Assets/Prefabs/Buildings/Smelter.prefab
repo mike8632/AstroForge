@@ -245,7 +245,7 @@ MonoBehaviour:
     smeltSeconds: 0.01
   - inputOre: 3
     inputCount: 1
-    outputIngot: 3
+    outputIngot: 7
     outputCount: 1
     smeltSeconds: 0.01
   intakeSide: 2

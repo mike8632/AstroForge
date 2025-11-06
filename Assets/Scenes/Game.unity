@@ -1884,7 +1884,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 28
+  m_lineSpacing: 40
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -2377,7 +2377,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000013828278, y: 0.0000036079437}
+  m_AnchoredPosition: {x: 0.000013828278, y: -0.0000033232743}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &453183658
@@ -2817,8 +2817,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 899395938}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -21449,7 +21448,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1409569263}
-  m_Father: {fileID: 519420032}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -26146,8 +26145,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2df30762966fe694c9eaa0a91449cc00, type: 2}
   selectedIndex: 0
   bulldozerIndex: 5
-  okColor: {r: 0, g: 1, b: 0, a: 0.35}
-  badColor: {r: 1, g: 0, b: 0, a: 0.35}
+  okColor: {r: 0, g: 1, b: 0, a: 0.7529412}
+  badColor: {r: 1, g: 0, b: 0, a: 0.5882353}
   bulldozerColor: {r: 1, g: 0.5, b: 0, a: 0.35}
   blockingLayers:
     serializedVersion: 2
@@ -26444,7 +26443,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 910671509}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999966
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -27254,6 +27253,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 1801565168}
+  - {fileID: 899395938}
   - {fileID: 1559614112}
   - {fileID: 105950633}
   - {fileID: 2061959178}
