@@ -11,7 +11,6 @@ public class ResourceNode : MonoBehaviour
     [Tooltip("Only used if infinite == false.")]
     public int amount = 100;
 
-    // Extract up to requested. Returns actual extracted.
     public int Extract(int request)
     {
         if (request <= 0) return 0;
@@ -24,7 +23,6 @@ public class ResourceNode : MonoBehaviour
 
     private void Deplete()
     {
-        // Simple: hide/destroy when empty. You can swap sprite, play effect, etc.
         Destroy(gameObject);
     }
 }

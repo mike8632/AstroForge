@@ -12,7 +12,6 @@ public class ResourceBank : MonoBehaviour
     [System.Serializable] public class ChangedOneEvent : UnityEvent<ResourceType, int> { }
     public ChangedOneEvent onChangedOne = new ChangedOneEvent();
 
-    // --- Test/seed data (Inspector) ---
     [Header("Startup / Debug")]
     [SerializeField] private bool startWithTestResources = true;
     [SerializeField]

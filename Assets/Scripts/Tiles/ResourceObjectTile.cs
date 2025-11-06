@@ -12,7 +12,6 @@ public class ResourceObjectTile : Tile
     public GameObject pilePrefab;
     public Vector3 prefabOffset = new Vector3(0f, 0.1f, 0f);
 
-    // overall size multiplier you can tweak per tile asset
     [Range(0.1f, 2f)] public float prefabScaleMultiplier = 0.7f;
 
     [Header("Randomization")]
@@ -24,20 +23,16 @@ public class ResourceObjectTile : Tile
     {
         if (go != null)
         {
-            // stable per-cell seed
             unchecked
             {
                 uint h = (uint)(position.x * 73856093) ^ (uint)(position.y * 19349663);
                 var rng = new System.Random((int)h);
 
-                // Rotation
                 float rot = Mathf.Lerp(-rotationVariance, rotationVariance, (float)rng.NextDouble());
 
-                // Scale (uniform) — preserve prefab's initial scale
                 float rand = 1f + Mathf.Lerp(-scaleVariance, scaleVariance, (float)rng.NextDouble());
                 float finalMul = prefabScaleMultiplier * rand;
 
-                // Position jitter (in tile local space)
                 float jx = Mathf.Lerp(-positionJitter, positionJitter, (float)rng.NextDouble());
                 float jy = Mathf.Lerp(-positionJitter, positionJitter, (float)rng.NextDouble());
 
@@ -46,7 +41,6 @@ public class ResourceObjectTile : Tile
                 t.localRotation = Quaternion.Euler(0f, 0f, rot);
                 t.localScale = new Vector3(initial.x * finalMul, initial.y * finalMul, initial.z);
 
-                // Add jitter and configurable offset in local space
                 t.localPosition += prefabOffset + new Vector3(jx, jy, 0f);
             }
         }

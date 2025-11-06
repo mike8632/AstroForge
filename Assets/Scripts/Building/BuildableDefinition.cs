@@ -30,11 +30,9 @@ public class BuildableDefinition : ScriptableObject
 #if UNITY_EDITOR
  private void OnValidate()
  {
- // Clamp footprint to at least1x1
  if (footprint.x <1) footprint.x =1;
  if (footprint.y <1) footprint.y =1;
 
- // Sanitize cost amounts (no negatives)
  if (cost != null)
  {
  for (int i =0; i < cost.Length; i++)
@@ -43,7 +41,6 @@ public class BuildableDefinition : ScriptableObject
  }
  }
 
- // De-duplicate allowed resource types
  if (allowedResourceTypes != null && allowedResourceTypes.Length >1)
  {
  var set = new HashSet<ResourceType>();
@@ -57,7 +54,6 @@ public class BuildableDefinition : ScriptableObject
  allowedResourceTypes = list.ToArray();
  }
 
- // Default display name from prefab if not set
  if (string.IsNullOrWhiteSpace(displayName) && prefab != null)
  displayName = prefab.name;
  }

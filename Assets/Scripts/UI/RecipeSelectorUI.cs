@@ -10,7 +10,7 @@ public class RecipeSelectorUI : MonoBehaviour
  [SerializeField] private RectTransform panel;
  [SerializeField] private TMP_Text titleText;
  [SerializeField] private RectTransform listContainer;
- [SerializeField] private Button optionButtonTemplate; // disabled template
+ [SerializeField] private Button optionButtonTemplate;
  [SerializeField] private Button closeButton;
 
  private Assembler _assembler;
@@ -44,7 +44,6 @@ public class RecipeSelectorUI : MonoBehaviour
  Debug.LogWarning("RecipeSelectorUI: Missing panel or listContainer references.");
  return;
  }
- // Clear old
  for (int i = listContainer.childCount -1; i >=0; i--)
  Destroy(listContainer.GetChild(i).gameObject);
 
@@ -64,7 +63,6 @@ public class RecipeSelectorUI : MonoBehaviour
  AddOptionRow(FormatAssemblerRecipe(r), () => { _assembler.SetSelectedRecipe(i); Hide(); });
  }
  }
- // Auto button
  AddOptionRow("Auto (first craftable)", () => { _assembler.SetSelectedRecipe(-1); Hide(); });
  }
  else if (_smelter)

@@ -43,20 +43,17 @@ public class ItemEntity : MonoBehaviour
 
         if (_currentBelt != null)
         {
-            // Move forward along belt and snap laterally toward belt centerline
             var flow = _currentBelt.DirectionVector;
             flow = flow.sqrMagnitude > 0f ? flow.normalized : Vector2.right;
             var pos = posBefore;
             var center = (Vector2)_currentBelt.transform.position;
-            float k = 1f - Mathf.Exp(-centerSnapSpeed * Time.fixedDeltaTime); // smooth factor
+            float k = 1f - Mathf.Exp(-centerSnapSpeed * Time.fixedDeltaTime); 
             if (Mathf.Abs(flow.x) >= Mathf.Abs(flow.y))
             {
-                // Horizontal belt: snap Y toward center
                 pos.y = Mathf.Lerp(pos.y, center.y, k);
             }
             else
             {
-                // Vertical belt: snap X toward center
                 pos.x = Mathf.Lerp(pos.x, center.x, k);
             }
             pos += flow * speed * Time.fixedDeltaTime;
@@ -64,12 +61,9 @@ public class ItemEntity : MonoBehaviour
         }
         else if (_dir.sqrMagnitude > 0f)
         {
-            // Fallback motion (should be zero after leaving belts per OnTriggerExit)
             _rb.MovePosition(posBefore + _dir * speed * Time.fixedDeltaTime);
         }
-
-        // Idle-despawn logic
-        var newPos = _rb.position; // updated by physics before next FixedUpdate
+        var newPos = _rb.position; 
         float distance = (newPos - _lastPos).magnitude;
         float vel = distance / Mathf.Max(Time.fixedDeltaTime, 1e-6f);
         bool moving = vel > idleSpeedThreshold;
@@ -124,7 +118,6 @@ public class ItemEntity : MonoBehaviour
         }
         else if (other.TryGetComponent<Building>(out var _))
         {
-            // Still touching a building; keep idle timer reset
             _idleTimer = 0f;
         }
     }
@@ -137,7 +130,6 @@ public class ItemEntity : MonoBehaviour
             if (_beltContacts == 0)
             {
                 _currentBelt = null;
-                // Stop at the end of belt
                 SetDirection(Vector2.zero);
             }
         }

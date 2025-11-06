@@ -7,8 +7,8 @@ using UnityEditor;
 [ExecuteAlways]
 public class ResourcePileRandomizer : MonoBehaviour
 {
-    [Range(0f, 20f)] public float rotationVariance = 10f;   // degrees
-    [Range(0f, 0.25f)] public float scaleVariance = 0.08f;  // ± around 1
+    [Range(0f, 20f)] public float rotationVariance = 10f;   
+    [Range(0f, 0.25f)] public float scaleVariance = 0.08f; 
     [Tooltip("Optional seed to vary patterns between different prefabs/assets.")]
     public int seed = 0;
 
@@ -80,7 +80,7 @@ public class ResourcePileRandomizer : MonoBehaviour
         h = (h ^ y) * 16777619u;
         return h;
     }
-    static float To01(uint v) => (v & 0xFFFFFF) / 16777215f; // 24-bit to 0..1
+    static float To01(uint v) => (v & 0xFFFFFF) / 16777215f; 
 
 #if UNITY_EDITOR
     [ContextMenu("Refresh Randomization")]

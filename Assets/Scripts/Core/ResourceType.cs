@@ -6,7 +6,6 @@ public enum ResourceType
     GoldOre,
     Stone,
 
-    // Optional processed forms for later
     IronIngot,
     CopperIngot,
     GoldIngot,

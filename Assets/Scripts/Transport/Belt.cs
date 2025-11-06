@@ -16,7 +16,6 @@ public class Belt : MonoBehaviour
     {
         get
         {
-            // Derive from current rotation so placed rotation controls flow
             var r = transform.right;
             if (Mathf.Abs(r.x) >= Mathf.Abs(r.y)) return r.x >=0 ? Vector2.right : Vector2.left;
             return r.y >=0 ? Vector2.up : Vector2.down;
@@ -26,7 +25,6 @@ public class Belt : MonoBehaviour
     private void Awake()
     {
         ApplyColliderSettings();
-        // Sync enum to current rotation so editor/placement rotation is respected
         direction = GetDirFromRotation();
     }
 

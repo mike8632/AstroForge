@@ -3,13 +3,13 @@ using TMPro;
 
 public class ResourceHUD : MonoBehaviour
 {
-    [SerializeField] TMP_Text text; // Assign a TextMeshProUGUI in the Inspector
+    [SerializeField] TMP_Text text; 
 
     void Start()
     {
         var bank = ResourceBank.Instance;
         if (bank != null) bank.onChanged.AddListener(Refresh);
-        Refresh(); // show zeros immediately
+        Refresh();
     }
 
     void OnDestroy()

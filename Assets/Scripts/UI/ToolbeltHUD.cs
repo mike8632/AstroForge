@@ -8,7 +8,7 @@ public class ToolbeltHUD : MonoBehaviour
     [Header("Refs")]
     [SerializeField] private BuildSystem buildSystem;
     [SerializeField] private RectTransform container;
-    [SerializeField] private Button buttonTemplate; // optional: used when not providing fixed slots
+    [SerializeField] private Button buttonTemplate; 
 
     [Header("Fixed Slots")]
     [SerializeField, Tooltip("Exact number of slots to show (e.g.,5).")]
@@ -22,8 +22,8 @@ public class ToolbeltHUD : MonoBehaviour
     [SerializeField] private bool showHotkeyNumbers = true;
 
     [Header("Tooltip")]
-    [SerializeField] private RectTransform tooltipPanel; // a small panel with background
-    [SerializeField] private TMPro.TMP_Text tooltipText; // text element inside the panel
+    [SerializeField] private RectTransform tooltipPanel;
+    [SerializeField] private TMPro.TMP_Text tooltipText; 
     [SerializeField] private Vector2 tooltipOffset = new Vector2(12f, -12f);
 
     private readonly List<Button> _buttons = new();
@@ -53,7 +53,6 @@ public class ToolbeltHUD : MonoBehaviour
     private void Update()
     {
         if (!tooltipPanel || !tooltipPanel.gameObject.activeSelf) return;
-        // follow mouse
 #if ENABLE_INPUT_SYSTEM
         Vector3 m = UnityEngine.InputSystem.Mouse.current != null ? (Vector3)UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector3.zero;
 #else
@@ -69,7 +68,6 @@ public class ToolbeltHUD : MonoBehaviour
 
         if (slotButtons != null && slotButtons.Length > 0)
         {
-            // Use provided fixed buttons
             int n = Mathf.Clamp(maxSlots, 0, slotButtons.Length);
             for (int i = 0; i < slotButtons.Length; i++)
             {
@@ -93,9 +91,7 @@ public class ToolbeltHUD : MonoBehaviour
         }
         else
         {
-            // Instantiate up to maxSlots from template
             if (!container || !buttonTemplate) return;
-            // Clear existing children from previous builds
             for (int i = container.childCount - 1; i >= 0; i--)
                 DestroyImmediate(container.GetChild(i).gameObject);
             for (int i = 0; i < maxSlots; i++)
@@ -169,14 +165,13 @@ public class ToolbeltHUD : MonoBehaviour
 
     private void SetupButtonVisuals(Button btn, int slotIndex)
     {
-        // Icon from buildSystem (null if out of range)
         var img = btn.GetComponent<Image>();
         if (img)
         {
             img.sprite = buildSystem.GetIconSprite(slotIndex);
             img.color = normalColor;
             img.preserveAspect = true;
-            img.enabled = img.sprite != null; // hide if no sprite available
+            img.enabled = img.sprite != null;
         }
 
         if (showHotkeyNumbers)

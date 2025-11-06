@@ -40,7 +40,6 @@ public class Assembler : MonoBehaviour
         var item = other.GetComponent<ItemEntity>();
         if (!item) return;
         if (!CanIntake(item.transform.position)) return;
-        // Restrict to selected recipe input if chosen
         if (selectedRecipeIndex >=0)
         {
             if (recipes == null || selectedRecipeIndex >= recipes.Count) return;
@@ -62,7 +61,7 @@ public class Assembler : MonoBehaviour
     {
         if (intakeSide == IntakeSide.Any) return true;
         Vector2 delta = (Vector2)itemPos - (Vector2)transform.position;
-        if (delta.sqrMagnitude <0.0001f) return false; // ignore center spawned
+        if (delta.sqrMagnitude <0.0001f) return false;
         Vector2 dir = delta.normalized;
         Vector2 allowed = intakeSide switch
         {

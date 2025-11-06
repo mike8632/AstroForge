@@ -38,16 +38,13 @@ public class ReturnToMainWithSave : MonoBehaviour
         }
         catch (System.Exception e) { Debug.LogWarning($"Save threw: {e.Message}"); }
 
-        // Mark continue available
         PlayerPrefs.SetInt(continueFlagKey, 1);
         PlayerPrefs.Save();
 
-        // Unpause
         if (Time.timeScale == 0f) Time.timeScale = 1f;
 
         SaveManager.ClearQueuedLoad();
 
-        // Go to main menu
         if (string.IsNullOrEmpty(mainMenuSceneName))
         {
             Debug.LogError("ReturnToMainWithSave: mainMenuSceneName is empty.");

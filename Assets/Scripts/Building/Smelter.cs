@@ -10,19 +10,19 @@ public class Smelter : MonoBehaviour
  [System.Serializable]
  public class SmeltRecipe
  {
- public ResourceType inputOre; // e.g. IronOre
+ public ResourceType inputOre; 
  public int inputCount =1;
- public ResourceType outputIngot; // e.g. IronIngot
+ public ResourceType outputIngot; 
  public int outputCount =1;
- public float smeltSeconds =2f; // time per batch
+ public float smeltSeconds =2f; 
  }
 
  [Header("Recipes")] public List<SmeltRecipe> recipes = new();
  [Header("Intake Settings")] [Tooltip("Only pick up items approaching from this local side of the building.")] public IntakeSide intakeSide = IntakeSide.Any;
  [Range(0.5f,1f)] public float intakeDotThreshold =0.75f;
 
- [Header("Output")] public Transform outputPoint; // where ingots spawn
- [SerializeField] private GameObject itemPrefab; // generic item entity prefab
+ [Header("Output")] public Transform outputPoint; 
+ [SerializeField] private GameObject itemPrefab;
 
  [Header("Selection")] [SerializeField, Tooltip("-1 = auto (first craftable). Otherwise, force this recipe.")] private int selectedRecipeIndex = -1;
  public int SelectedRecipeIndex => selectedRecipeIndex;

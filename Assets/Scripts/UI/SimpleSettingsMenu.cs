@@ -28,7 +28,6 @@ public class SimpleSettingsMenu : MonoBehaviour
     [Header("Go Back")]
     public UnityEvent onGoBack;
 
-    // PlayerPrefs keys
     const string KeyResW    = "settings_res_w";
     const string KeyResH    = "settings_res_h";
     const string KeyFull    = "settings_fullscreen";
@@ -89,7 +88,6 @@ public class SimpleSettingsMenu : MonoBehaviour
                 _resOptions.Add(new Vector2Int(r.width, r.height));
         }
 
-        // Fallback: at least current resolution
         if (_resOptions.Count == 0)
             _resOptions.Add(new Vector2Int(Screen.currentResolution.width, Screen.currentResolution.height));
 
@@ -122,7 +120,6 @@ public class SimpleSettingsMenu : MonoBehaviour
     {
         _suppress = true;
 
-        // Resolution
         if (resolutionDropdown)
         {
             var savedW = PlayerPrefs.GetInt(KeyResW, Screen.currentResolution.width);
@@ -132,11 +129,9 @@ public class SimpleSettingsMenu : MonoBehaviour
             resolutionDropdown.SetValueWithoutNotify(idx);
         }
 
-        // Fullscreen
         if (fullscreenToggle)
             fullscreenToggle.SetIsOnWithoutNotify(PlayerPrefs.GetInt(KeyFull, 0) == 1);
 
-        // Sliders (0..100 UI)
         SetSlider(masterSlider, PlayerPrefs.GetFloat(KeyVolMst, 0.75f));
         SetSlider(musicSlider,  PlayerPrefs.GetFloat(KeyVolMus, 0.60f));
         SetSlider(sfxSlider,    PlayerPrefs.GetFloat(KeyVolSfx, 0.80f));
@@ -223,7 +218,6 @@ public class SimpleSettingsMenu : MonoBehaviour
         }
         else
         {
-            // Simple fallback: master controls global volume
             AudioListener.volume = Mathf.Clamp01(master);
         }
     }

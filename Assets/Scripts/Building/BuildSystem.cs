@@ -10,7 +10,7 @@ public class BuildSystem : MonoBehaviour
 {
     [Header("Scene refs")]
     [SerializeField] private Grid grid;
-    [SerializeField] private Tilemap resourceMap; // used to detect ResourceNode (placed as prefabs on this layer)
+    [SerializeField] private Tilemap resourceMap;
     [SerializeField] private Camera worldCamera;
 
     [Header("Buildables")]
@@ -45,10 +45,8 @@ public class BuildSystem : MonoBehaviour
     public bool BulldozerActive => selectedIndex == bulldozerIndex;
     public int BulldozerIndex => bulldozerIndex;
 
-    // Selection -------------------------------------------------
     public void SetSelectedIndex(int i)
     {
-        // Toggle off if pressing the same slot
         if (i == selectedIndex)
         {
             selectedIndex = -1;
@@ -59,7 +57,6 @@ public class BuildSystem : MonoBehaviour
 
         if (buildables == null || i <0 || i >= buildables.Count)
         {
-            // Special-case bulldozer so it can live outside list bounds
             if (i == bulldozerIndex)
             {
                 selectedIndex = i;
@@ -81,7 +78,6 @@ public class BuildSystem : MonoBehaviour
     {
         if (index == bulldozerIndex)
         {
-            // No dedicated icon by default (returns null). If you added a buildable as icon holder at this index, use its sprite.
             if (buildables != null && bulldozerIndex >=0 && bulldozerIndex < buildables.Count)
             {
                 var bd = buildables[bulldozerIndex];
@@ -111,7 +107,6 @@ public class BuildSystem : MonoBehaviour
         if (selectedIndex >=0) CreateGhost(); else HideGhost();
     }
 
-    // Utility ---------------------------------------------------
     private bool IsPointerOverUI()
     {
         var es = EventSystem.current;
@@ -144,7 +139,6 @@ public class BuildSystem : MonoBehaviour
         return w;
     }
 
-    // Update Loop ----------------------------------------------
     private void Update()
     {
         if (_shuttingDown) return;
@@ -152,14 +146,11 @@ public class BuildSystem : MonoBehaviour
         if (worldCamera == null) worldCamera = Camera.main;
         if (worldCamera == null) return;
 
-        // Allow hotkeys even when over UI/paused (selection only)
         HandleHotkeys();
 
-        // Block placement/ghost updates while paused or hovering UI
         if (Time.timeScale ==0f) return;
         if (IsPointerOverUI()) return;
 
-        // When not placing and not bulldozing, allow clicking buildings to open their UI
         if (!BulldozerActive && Sel == null && LeftClickDown())
         {
             var b = GetBuildingUnderPointer();
@@ -212,7 +203,6 @@ public class BuildSystem : MonoBehaviour
 #endif
     }
 
-    // Ghost -----------------------------------------------------
     private void CreateGhost()
     {
         if (_ghost) Destroy(_ghost);
@@ -245,7 +235,6 @@ public class BuildSystem : MonoBehaviour
     private void RotateGhost() { if (_ghost && !BulldozerActive) _ghost.transform.Rotate(0,0,90f); }
     private void CancelGhostRotation() { if (_ghost && !BulldozerActive) _ghost.transform.rotation = Quaternion.identity; }
 
-    // Bulldozer -------------------------------------------------
     private void ClearHighlight()
     {
         if (_highlighted.Count ==0) return;
@@ -275,7 +264,6 @@ public class BuildSystem : MonoBehaviour
     private Building GetBuildingAtCell(Vector3Int cell)
     {
         var center = CellCenterWorld(cell);
-        // Use overlap box without strict layer mask (in case buildings not on Buildings layer yet)
         var hits = Physics2D.OverlapBoxAll(center, grid.cellSize *0.9f,0f);
         foreach (var h in hits)
         {
@@ -296,7 +284,6 @@ public class BuildSystem : MonoBehaviour
             var b = h.GetComponent<Building>() ?? h.GetComponentInParent<Building>();
             if (b) return b;
         }
-        // Fall back to cell center probe
         return GetBuildingAtCell(GetHoverCell());
     }
 
@@ -315,7 +302,6 @@ public class BuildSystem : MonoBehaviour
         if (!LeftClickDown()) return;
         var target = GetBuildingUnderPointer();
         if (!target) return;
-        // Refund
         var def = target.Definition;
         if (def && def.cost != null)
         {
@@ -326,7 +312,6 @@ public class BuildSystem : MonoBehaviour
         ClearHighlight();
     }
 
-    // Placement -------------------------------------------------
     private bool CanPlaceAt(Vector3Int baseCell, BuildableDefinition def)
     {
         if (!def || !def.prefab) return false;
@@ -369,7 +354,6 @@ public class BuildSystem : MonoBehaviour
     {
         var worldPos = CellCenterWorld(baseCell);
         var go = Instantiate(def.prefab, worldPos, _ghost ? _ghost.transform.rotation : Quaternion.identity);
-        // Ensure layer assignment for bulldozer detection
         int buildingsLayer = LayerMask.NameToLayer("Buildings");
         if (buildingsLayer >=0) go.layer = buildingsLayer;
         var building = go.GetComponent<Building>();
@@ -381,7 +365,6 @@ public class BuildSystem : MonoBehaviour
         CostUtils.Spend(Bank, def.cost);
     }
 
-    // Gizmos ----------------------------------------------------
     private void OnDrawGizmosSelected()
     {
         if (!Sel || grid == null) return; Gizmos.color = Color.cyan;
@@ -390,7 +373,6 @@ public class BuildSystem : MonoBehaviour
         { var c = cell + new Vector3Int(x,y,0); Gizmos.DrawWireCube(CellCenterWorld(c), grid.cellSize *0.95f); }
     }
 
-    // Input wrappers -------------------------------------------
     private bool LeftClickDown()
     {
 #if ENABLE_INPUT_SYSTEM

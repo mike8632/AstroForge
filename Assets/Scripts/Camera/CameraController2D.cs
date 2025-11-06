@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.InputSystem; // NEW input system
+using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController2D : MonoBehaviour
 {
     [Header("Pan")]
-    public float panSpeed = 12f;      // WASD/arrow keys
-    public float dragSpeed = 1.0f;    // Middle mouse drag
+    public float panSpeed = 12f;     
+    public float dragSpeed = 1.0f;  
 
     [Header("Zoom")]
     public float zoomSpeed = 5f;
@@ -32,7 +32,6 @@ public class CameraController2D : MonoBehaviour
 
     void OnDisable()
     {
-        // During scene unload, components may be destroyed mid-frame
         dragging = false;
         shuttingDown = true;
     }
@@ -50,7 +49,6 @@ public class CameraController2D : MonoBehaviour
 
     bool Blocked()
     {
-        // Block when paused or pointer is over UI
         return Time.timeScale == 0f || IsPointerOverUI();
     }
 
@@ -60,7 +58,6 @@ public class CameraController2D : MonoBehaviour
 
         if (Blocked())
         {
-            // cancel active drag so it can't persist through pause/menu
             dragging = false;
             return;
         }
@@ -114,7 +111,7 @@ public class CameraController2D : MonoBehaviour
         var mouse = Mouse.current;
         if (mouse == null) return;
 
-        float scrollY = mouse.scroll.ReadValue().y; // + op / - ned
+        float scrollY = mouse.scroll.ReadValue().y;
         if (Mathf.Abs(scrollY) > 0.01f)
         {
             cam.orthographicSize = Mathf.Clamp(
