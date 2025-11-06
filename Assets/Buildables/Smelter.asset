@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 429aad26b69691a4f8243485082e0903, type: 3}
-  m_Name: Bulldozer
+  m_Name: Smelter
   m_EditorClassIdentifier: Assembly-CSharp::BuildableDefinition
-  displayName: Bulldozer
-  prefab: {fileID: 4851125473696428564, guid: 7bec89742bcea0f47a24bcf57dce86fc, type: 3}
+  displayName: 
+  prefab: {fileID: 0}
   footprint: {x: 1, y: 1}
-  placementRule: 0
+  placementRule: 2
   allowedResourceTypes: 
-  cost: []
+  cost:
+  - type: 4
+    amount: 5
