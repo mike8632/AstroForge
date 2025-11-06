@@ -119,6 +119,53 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &35365154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 35365156}
+  - component: {fileID: 35365155}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &35365155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35365154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48f56933c2197794cacffefabd19e21a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
+  dontDestroyOnLoad: 1
+  autoLoadOnSceneStart: 0
+  continueFlagKey: save_exists
+--- !u!4 &35365156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35365154}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 727.8255, y: 404.76904, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &38629794
 GameObject:
   m_ObjectHideFlags: 0
@@ -2557,14 +2604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MenuNavigator
   mainMenuRoot: {fileID: 933745999}
   settingsMenuRoot: {fileID: 1423635007}
-  loadingPanelRoot: {fileID: 0}
   gameSceneName: Game
-  loadAsync: 1
-  hideMainWhileInSettings: 1
-  continueButton: {fileID: 855028158}
-  continueFlagKey: save_exists
-  simulateSaveInEditor: 0
-  continueFallsBackToNewGame: 1
 --- !u!1 &964419631
 GameObject:
   m_ObjectHideFlags: 0
@@ -5581,3 +5621,4 @@ SceneRoots:
   - {fileID: 933746005}
   - {fileID: 1423635014}
   - {fileID: 554424322}
+  - {fileID: 35365156}

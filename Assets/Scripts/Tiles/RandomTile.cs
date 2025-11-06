@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-/*
-Usage Notes:
-- Utfyld 'variants' for vægtet fordeling; ellers bruges 'm_Sprites' (jævn fordeling). Variants har forrang.
-- 'seed' styrer det deterministiske mønster. Brug forskellige tile-assets hvis du vil have forskellige seeds pr. Tilemap.
-- Brug Context Menu -> "Refresh Cache" for manuelt at genopbygge cache, hvis du ændrer arrays via script.
-*/
 
 [CreateAssetMenu(fileName = "New Random Tile", menuName = "Tiles/Random Tile")]
 [ExecuteAlways]
@@ -91,8 +85,7 @@ public class RandomTile : TileBase
         }
     }
 
-    // Cache preprocessing in editor when values change
-    // Cache preprocessing when values change
+
     protected void OnValidate()
     {
         RebuildCache();
@@ -106,7 +99,6 @@ public class RandomTile : TileBase
 
     private void RebuildCache()
     {
-        // Cache non-null m_Sprites
         if (m_Sprites != null && m_Sprites.Length > 0)
         {
             var list = new List<Sprite>(m_Sprites.Length);
@@ -122,7 +114,6 @@ public class RandomTile : TileBase
             _spritesNonNull = null;
         }
 
-        // Cache weighted variants cumulative weights and sprites (skip nulls, clamp weight >=1)
         if (variants != null && variants.Length > 0)
         {
             var spr = new List<Sprite>(variants.Length);

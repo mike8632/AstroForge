@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.InputSystem; // NEW input system
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController2D : MonoBehaviour
@@ -21,15 +22,49 @@ public class CameraController2D : MonoBehaviour
     Camera cam;
     bool dragging;
     Vector3 dragOriginWorld;
+    bool shuttingDown;
 
     void Awake()
     {
         cam = GetComponent<Camera>();
-        cam.orthographic = true;
+        if (cam != null) cam.orthographic = true;
+    }
+
+    void OnDisable()
+    {
+        // During scene unload, components may be destroyed mid-frame
+        dragging = false;
+        shuttingDown = true;
+    }
+
+    void OnApplicationQuit()
+    {
+        shuttingDown = true;
+    }
+
+    bool IsPointerOverUI()
+    {
+        var es = EventSystem.current;
+        return es != null && es.IsPointerOverGameObject();
+    }
+
+    bool Blocked()
+    {
+        // Block when paused or pointer is over UI
+        return Time.timeScale == 0f || IsPointerOverUI();
     }
 
     void Update()
     {
+        if (shuttingDown || cam == null) return;
+
+        if (Blocked())
+        {
+            // cancel active drag so it can't persist through pause/menu
+            dragging = false;
+            return;
+        }
+
         HandlePan();
         HandleDrag();
         HandleZoom();
@@ -38,6 +73,7 @@ public class CameraController2D : MonoBehaviour
 
     void HandlePan()
     {
+        if (cam == null || Blocked()) return;
         var kb = Keyboard.current;
         if (kb == null) return;
 
@@ -52,6 +88,7 @@ public class CameraController2D : MonoBehaviour
 
     void HandleDrag()
     {
+        if (cam == null || Blocked()) { dragging = false; return; }
         var mouse = Mouse.current;
         if (mouse == null) return;
 
@@ -73,6 +110,7 @@ public class CameraController2D : MonoBehaviour
 
     void HandleZoom()
     {
+        if (cam == null || Blocked()) return;
         var mouse = Mouse.current;
         if (mouse == null) return;
 
@@ -88,6 +126,7 @@ public class CameraController2D : MonoBehaviour
 
     void ClampInsideTilemap()
     {
+        if (cam == null) return;
         if (!clampToTilemap) return;
 
         var bounds = clampToTilemap.localBounds;
