@@ -6,10 +6,13 @@ public class SaveableEntity : MonoBehaviour
 {
     [SerializeField] private string uniqueId = Guid.Empty.ToString();
 
+    [Tooltip("If true, this object will not be destroyed by load routines.")]
+    [SerializeField] private bool isPersistent = false;
+
     public string UniqueId => uniqueId;
+    public bool IsPersistent => isPersistent;
 
 #if UNITY_EDITOR
-    // Ensure a GUID is assigned in editor.
     private void OnValidate()
     {
         if (string.IsNullOrEmpty(uniqueId) || uniqueId == Guid.Empty.ToString())
@@ -19,10 +22,7 @@ public class SaveableEntity : MonoBehaviour
         }
     }
 
-    [ContextMenu("Regenerate ID (use if you duplicated objects and IDs collided)")]
-    private void RegenerateId()
-    {
-        uniqueId = Guid.NewGuid().ToString();
-    }
+    [ContextMenu("Regenerate ID")]
+    private void RegenerateId() => uniqueId = Guid.NewGuid().ToString();
 #endif
 }

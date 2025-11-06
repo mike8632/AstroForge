@@ -112,6 +112,8 @@ public class SaveManager : MonoBehaviour
             var entities = FindObjectsOfType<SaveableEntity>(true);
             foreach (var entity in entities)
             {
+                if (entity.IsPersistent) continue;
+
                 var saveables = entity.GetComponents<ISaveable>();
                 if (saveables == null || saveables.Length == 0) continue;
 
@@ -167,12 +169,22 @@ public class SaveManager : MonoBehaviour
             if (!string.IsNullOrEmpty(save.sceneName) && save.sceneName != current)
             {
                 Debug.Log($"SaveManager: Loading saved scene '{save.sceneName}' (current '{current}').");
-                QueueLoadOnNextScene(); // will load data after the scene switches
+                QueueLoadOnNextScene();
                 SceneManager.LoadScene(save.sceneName);
                 return true;
             }
 
-            var lookup = FindObjectsOfType<SaveableEntity>(true).ToDictionary(e => e.UniqueId, e => e);
+            var existing = FindObjectsOfType<SaveableEntity>(true);
+            foreach (var s in existing)
+            {
+                if (s == null) continue;
+                if (s.IsPersistent) continue;   
+                Destroy(s.gameObject);
+            }
+
+            var lookup = FindObjectsOfType<SaveableEntity>(true)
+                .ToDictionary(e => e.UniqueId, e => e);
+
             int restoredObjects = 0;
 
             foreach (var obj in save.objects)
@@ -191,7 +203,7 @@ public class SaveManager : MonoBehaviour
                     foreach (var s in saveables)
                     {
                         try { s.RestoreState(state); }
-                        catch (InvalidCastException) { /* ignore different state types */ }
+                        catch (InvalidCastException) { /* ignore */ }
                         catch (Exception ex) { Debug.LogWarning($"SaveManager: Restore error on {entity.name}: {ex.Message}"); }
                     }
                 }

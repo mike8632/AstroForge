@@ -13,7 +13,7 @@ public class ResourceObjectTile : Tile
     public Vector3 prefabOffset = new Vector3(0f, 0.1f, 0f);
 
     // overall size multiplier you can tweak per tile asset
-    [Range(0.1f, 2f)] public float prefabScaleMultiplier = 0.7f;
+    [Range(0.1f, 2f)] public float prefabScaleMultiplier = 1f;
 
     [Header("Randomization")]
     [Range(0f, 45f)] public float rotationVariance = 15f;
