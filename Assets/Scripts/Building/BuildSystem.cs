@@ -159,6 +159,27 @@ public class BuildSystem : MonoBehaviour
         if (Time.timeScale ==0f) return;
         if (IsPointerOverUI()) return;
 
+        // When not placing and not bulldozing, allow clicking buildings to open their UI
+        if (!BulldozerActive && Sel == null && LeftClickDown())
+        {
+            var b = GetBuildingUnderPointer();
+            if (b)
+            {
+                var asm = b.GetComponent<Assembler>();
+                if (asm && RecipeSelectorUI.Instance)
+                {
+                    RecipeSelectorUI.Instance.Show(asm);
+                    return;
+                }
+                var sm = b.GetComponent<Smelter>();
+                if (sm && RecipeSelectorUI.Instance)
+                {
+                    RecipeSelectorUI.Instance.Show(sm);
+                    return;
+                }
+            }
+        }
+
         if (BulldozerActive)
         { UpdateBulldozerGhost(); HandleBulldozerClick(); return; }
 

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429aad26b69691a4f8243485082e0903, type: 3}
   m_Name: Smelter
   m_EditorClassIdentifier: Assembly-CSharp::BuildableDefinition
-  displayName: 
-  prefab: {fileID: 0}
+  displayName: Smelter
+  prefab: {fileID: 8859249946427451322, guid: 21a7c0bdb3126b64eb7e1c6ee8daec59, type: 3}
   footprint: {x: 1, y: 1}
   placementRule: 2
   allowedResourceTypes: 

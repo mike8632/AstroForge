@@ -29,6 +29,9 @@ public class ResourceHUD : MonoBehaviour
             $"Iron: {b.Get(ResourceType.IronOre)}\n" +
             $"Copper: {b.Get(ResourceType.CopperOre)}\n" +
             $"Gold: {b.Get(ResourceType.GoldOre)}\n" +
-            $"Iron Ingot: {b.Get(ResourceType.IronIngot)}";
+            $"Iron Ingot: {b.Get(ResourceType.IronIngot)}\n" +
+            $"Copper Ingot: {b.Get(ResourceType.CopperIngot)}\n" +
+            $"Gold Ingot: {b.Get(ResourceType.GoldIngot)}";
+            
     }
 }

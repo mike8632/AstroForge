@@ -233,12 +233,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assembler
   recipes:
-  - input: 2
+  - input: 3
     inputCount: 1
-    output: 6
+    output: 7
+    outputCount: 1
+    craftSeconds: 0.01
+  - input: 5
+    inputCount: 1
+    output: 0
     outputCount: 1
     craftSeconds: 0.01
   intakeSide: 2
   intakeDotThreshold: 0.75
   outputPoint: {fileID: 1590559603544906759}
   itemPrefab: {fileID: 6944547672416760441, guid: cc91868f6355e92468034ad1e1d0fb3d, type: 3}
+  selectedRecipeIndex: -1
