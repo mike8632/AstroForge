@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429aad26b69691a4f8243485082e0903, type: 3}
   m_Name: Belt
   m_EditorClassIdentifier: Assembly-CSharp::BuildableDefinition
-  displayName: 
-  prefab: {fileID: 0}
+  displayName: Belts
+  prefab: {fileID: 8859249946427451322, guid: 3f8ee88bf485438499634d1c3ba0e373, type: 3}
   footprint: {x: 1, y: 1}
   placementRule: 2
   allowedResourceTypes: 

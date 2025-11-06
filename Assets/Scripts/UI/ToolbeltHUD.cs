@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ToolbeltHUD : MonoBehaviour
 {
@@ -20,11 +21,18 @@ public class ToolbeltHUD : MonoBehaviour
     [SerializeField] private Color selectedColor = new Color(0.6f, 0.9f, 1f, 1f);
     [SerializeField] private bool showHotkeyNumbers = true;
 
+    [Header("Tooltip")]
+    [SerializeField] private RectTransform tooltipPanel; // a small panel with background
+    [SerializeField] private TMPro.TMP_Text tooltipText; // text element inside the panel
+    [SerializeField] private Vector2 tooltipOffset = new Vector2(12f, -12f);
+
     private readonly List<Button> _buttons = new();
+    private int _hoverIndex = -1;
 
     private void Awake()
     {
         if (!buildSystem) buildSystem = FindObjectOfType<BuildSystem>();
+        if (tooltipPanel) tooltipPanel.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -39,6 +47,19 @@ public class ToolbeltHUD : MonoBehaviour
     {
         if (buildSystem != null)
             buildSystem.SelectionChanged -= OnSelectionChanged;
+        HideTooltip();
+    }
+
+    private void Update()
+    {
+        if (!tooltipPanel || !tooltipPanel.gameObject.activeSelf) return;
+        // follow mouse
+#if ENABLE_INPUT_SYSTEM
+        Vector3 m = UnityEngine.InputSystem.Mouse.current != null ? (Vector3)UnityEngine.InputSystem.Mouse.current.position.ReadValue() : Vector3.zero;
+#else
+        Vector3 m = Input.mousePosition;
+#endif
+        tooltipPanel.position = m + (Vector3)tooltipOffset;
     }
 
     public void Rebuild()
@@ -60,6 +81,7 @@ public class ToolbeltHUD : MonoBehaviour
                 {
                     btn.onClick.AddListener(() => buildSystem.SetSelectedIndex(index));
                     SetupButtonVisuals(btn, index);
+                    WireHover(btn, index);
                     btn.gameObject.SetActive(true);
                     _buttons.Add(btn);
                 }
@@ -84,9 +106,65 @@ public class ToolbeltHUD : MonoBehaviour
                 btn.onClick.RemoveAllListeners();
                 btn.onClick.AddListener(() => buildSystem.SetSelectedIndex(index));
                 SetupButtonVisuals(btn, index);
+                WireHover(btn, index);
                 _buttons.Add(btn);
             }
         }
+    }
+
+    private void WireHover(Button btn, int index)
+    {
+        var trig = btn.GetComponent<EventTrigger>();
+        if (!trig) trig = btn.gameObject.AddComponent<EventTrigger>();
+        trig.triggers ??= new List<EventTrigger.Entry>();
+        trig.triggers.Clear();
+
+        var enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+        enter.callback.AddListener(_ => ShowTooltipFor(index));
+        trig.triggers.Add(enter);
+        var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+        exit.callback.AddListener(_ => HideTooltip());
+        trig.triggers.Add(exit);
+    }
+
+    private void ShowTooltipFor(int index)
+    {
+        _hoverIndex = index;
+        if (!tooltipPanel || !tooltipText) return;
+        tooltipText.text = BuildTooltipText(index);
+        tooltipPanel.gameObject.SetActive(true);
+    }
+
+    private void HideTooltip()
+    {
+        _hoverIndex = -1;
+        if (tooltipPanel) tooltipPanel.gameObject.SetActive(false);
+    }
+
+    private string BuildTooltipText(int index)
+    {
+        if (!buildSystem) return string.Empty;
+        // Bulldozer slot
+        if (index == buildSystem.BulldozerIndex)
+        {
+            return "Bulldozer\n<color=#FF5555>Refunds buildings cost</color>";
+        }
+        var def = buildSystem.GetDefinition(index);
+        if (!def) return string.Empty;
+        var name = string.IsNullOrEmpty(def.displayName) ? "(Unnamed)" : def.displayName;
+        // Costs
+        if (def.cost == null || def.cost.Length == 0)
+            return name + "\n<color=#FF5555>Cost: Free</color>";
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        sb.Append(name).Append("\n<color=#FF5555>Cost: ");
+        for (int i = 0; i < def.cost.Length; i++)
+        {
+            var c = def.cost[i];
+            sb.Append(c.amount).Append(" ").Append(c.type);
+            if (i < def.cost.Length - 1) sb.Append(", ");
+        }
+        sb.Append("</color>");
+        return sb.ToString();
     }
 
     private void SetupButtonVisuals(Button btn, int slotIndex)

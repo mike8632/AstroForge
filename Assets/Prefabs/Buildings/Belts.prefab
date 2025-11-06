@@ -89,8 +89,8 @@ GameObject:
   - component: {fileID: 6187282829170926503}
   - component: {fileID: -4860131381049048465}
   - component: {fileID: -3535975662824229926}
-  - component: {fileID: 220499544988945563}
   - component: {fileID: -7778710775843762412}
+  - component: {fileID: 6856114657133113559}
   m_Layer: 6
   m_Name: Belts
   m_TagString: Untagged
@@ -218,23 +218,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &220499544988945563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8859249946427451322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6359e926b0a3a954891beb7054877d3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Building
-  footprint: {x: 1, y: 1}
-  blockingLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  autoSizeCollider: 1
 --- !u!114 &-7778710775843762412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,3 +234,20 @@ MonoBehaviour:
   autoSizeCollider: 1
   autoOrientToDirection: 1
   colliderSizeFactor: 1
+--- !u!114 &6856114657133113559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859249946427451322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37c17e355fb6389498b477bd2b160eb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Building
+  footprint: {x: 1, y: 1}
+  blockingLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  autoSizeCollider: 1

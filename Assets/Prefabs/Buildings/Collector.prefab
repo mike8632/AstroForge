@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -4860131381049048465}
   - component: {fileID: -3535975662824229926}
   - component: {fileID: 6107561467311345603}
-  - component: {fileID: 7501934219921838951}
+  - component: {fileID: -5744735467934216098}
   m_Layer: 6
   m_Name: Collector
   m_TagString: Untagged
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Collector
   autoCollect: 1
---- !u!114 &7501934219921838951
+--- !u!114 &-5744735467934216098
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8859249946427451322}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6359e926b0a3a954891beb7054877d3c, type: 3}
+  m_Script: {fileID: 11500000, guid: 37c17e355fb6389498b477bd2b160eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Building
   footprint: {x: 1, y: 1}
