@@ -89,8 +89,8 @@ GameObject:
   - component: {fileID: 6187282829170926503}
   - component: {fileID: -4860131381049048465}
   - component: {fileID: -3535975662824229926}
-  - component: {fileID: 116357090320180043}
-  - component: {fileID: -3969396769292718719}
+  - component: {fileID: 220499544988945563}
+  - component: {fileID: -7778710775843762412}
   m_Layer: 6
   m_Name: Belts
   m_TagString: Untagged
@@ -210,7 +210,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.2190477, y: 1.2190477}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 1.2190477, y: 1.2190477}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -218,7 +218,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &116357090320180043
+--- !u!114 &220499544988945563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8859249946427451322}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4094a6c8a9ecdc54084505b90e31fcc6, type: 3}
+  m_Script: {fileID: 11500000, guid: 6359e926b0a3a954891beb7054877d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Building
   footprint: {x: 1, y: 1}
@@ -235,7 +235,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   autoSizeCollider: 1
---- !u!114 &-3969396769292718719
+--- !u!114 &-7778710775843762412
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
