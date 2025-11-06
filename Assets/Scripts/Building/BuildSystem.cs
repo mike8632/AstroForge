@@ -207,23 +207,31 @@ public class BuildSystem : MonoBehaviour
         var mask = (LayerMask)maskValue;
 
         bool requiresResource = def.placementRule == PlacementRule.OnResourceOnly;
+        bool disallowResource = def.placementRule == PlacementRule.OnGroundOnly;
         bool foundResourceUnderFootprint = false;
 
         for (int y = 0; y < def.footprint.y; y++)
-            for (int x = 0; x < def.footprint.x; x++)
+        for (int x = 0; x < def.footprint.x; x++)
+        {
+            var c = baseCell + new Vector3Int(x, y, 0);
+            var center = CellCenterWorld(c);
+
+            var hit = Physics2D.OverlapBox(center, grid.cellSize * 0.9f, 0f, mask);
+            if (hit) return false;
+
+            if (requiresResource && !foundResourceUnderFootprint)
             {
-                var c = baseCell + new Vector3Int(x, y, 0);
-                var center = CellCenterWorld(c);
-
-                var hit = Physics2D.OverlapBox(center, grid.cellSize * 0.9f, 0f, mask);
-                if (hit) return false;
-
-                if (requiresResource && !foundResourceUnderFootprint)
-                {
-                    if (HasAllowedResourceNodeAt(c, def.allowedResourceTypes))
-                        foundResourceUnderFootprint = true;
-                }
+                if (HasAllowedResourceNodeAt(c, def.allowedResourceTypes))
+                    foundResourceUnderFootprint = true;
             }
+
+            if (disallowResource)
+            {
+                // If any resource node exists under footprint, block placement
+                if (HasAllowedResourceNodeAt(c, null))
+                    return false;
+            }
+        }
 
         if (requiresResource && !foundResourceUnderFootprint)
             return false;
@@ -263,11 +271,11 @@ public class BuildSystem : MonoBehaviour
         Gizmos.color = Color.cyan;
         var cell = Application.isPlaying ? GetHoverCell() : grid.WorldToCell(Vector3.zero);
         for (int y = 0; y < Sel.footprint.y; y++)
-            for (int x = 0; x < Sel.footprint.x; x++)
-            {
-                var c = cell + new Vector3Int(x, y, 0);
-                Gizmos.DrawWireCube(CellCenterWorld(c), grid.cellSize * 0.95f);
-            }
+        for (int x = 0; x < Sel.footprint.x; x++)
+        {
+            var c = cell + new Vector3Int(x, y, 0);
+            Gizmos.DrawWireCube(CellCenterWorld(c), grid.cellSize * 0.95f);
+        }
     }
 
     private bool LeftClickDown()
