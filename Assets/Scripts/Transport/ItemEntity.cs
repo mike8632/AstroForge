@@ -68,10 +68,6 @@ public class ItemEntity : MonoBehaviour
             _currentBelt = belt;
             SetDirection(belt.DirectionVector);
         }
-        else if (other.TryGetComponent<Collector>(out var collector))
-        {
-            collector.Collect(this);
-        }
     }
 
     private void OnTriggerStay2D(Collider2D other)
