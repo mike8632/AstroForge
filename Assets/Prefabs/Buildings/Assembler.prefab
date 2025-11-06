@@ -238,5 +238,7 @@ MonoBehaviour:
     output: 6
     outputCount: 1
     craftSeconds: 0.01
+  intakeSide: 2
+  intakeDotThreshold: 0.75
   outputPoint: {fileID: 1590559603544906759}
   itemPrefab: {fileID: 6944547672416760441, guid: cc91868f6355e92468034ad1e1d0fb3d, type: 3}
