@@ -12,10 +12,8 @@ public class Building : MonoBehaviour
  [Header("Collider")]
  [SerializeField] private bool autoSizeCollider = true;
 
- // Grid cell where this building was placed
  public Vector3Int Cell { get; set; }
 
- // Buildable definition for refunds
  public BuildableDefinition Definition { get; set; }
 
  private void Awake()
